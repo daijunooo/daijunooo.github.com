@@ -9,9 +9,9 @@
   
   
   
-      <title>fun - Category - Tommy Dai</title>
-  
     
+  
+      <title>Java 多线程笔记 - Tommy Dai</title>
   
   
   <meta name="description" content="">
@@ -177,80 +177,130 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div style="flex: 1;">
-      <div class="container">
-	
-		
-		 <div class='article-header'>
-			<div class='article-logo'>
-                <img src="/images/fun.svg" alt="">
-         	</div><h2 class='article-title'>fun</h2>
-		</div>
-		
-		<div class="grid-4_sm-1 grid-equalHeight">
-		
-			<div class="col">
-	<div class='Card-archive'>
-		<div class="Card-body">
-			<p class='Card-title'>
-				
-					<a href="/2017/11/17/area/">
-				
-				标准 省-市-区-乡镇 行政区划数据爬取</a>
-			</p>
-			<small class="Card-meta">
-				2017-11-17
-			</small>
-		</div>
-	</div>
-</div>
-		
-			<div class="col">
-	<div class='Card-archive'>
-		<div class="Card-body">
-			<p class='Card-title'>
-				
-					<a href="/2017/09/23/array_unique/">
-				
-				Php系统函数未必都是效率最优</a>
-			</p>
-			<small class="Card-meta">
-				2017-09-23
-			</small>
-		</div>
-	</div>
-</div>
-		
-		</div>
-	
-</div>
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
 
-<div class='pagination'>
-	
-		<div class="pagination-item">
-			<a href="/categories/fun/" class="prev grow"><b><</b></a>
-		</div>
-	
-	
-	
-		<div class="pagination-item">
-			
-			
-				
-					<a class='grow' href="/categories/fun/">1</a>
-				
-			
-		</div>
-	
-		<div class="pagination-item">
-			
-			
-				<span>2</span>
-			
-		</div>
-	
+<article class="article" id="/2020/02/29/javaThread/" data-name='Java 多线程笔记' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2020/02/29/javaThread/">
+                Java 多线程笔记
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/java/" data-no-instant>
+                    <img src="/images/java.svg" alt="java" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2020-02-29
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
 
 	
-</div>
+		<label><a href="/tags/java/">#Java</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h3 id="什么是线程"><a href="#什么是线程" class="headerlink" title="什么是线程?"></a>什么是线程?</h3><ul>
+<li>引用马士兵老师一句话：线程是一个程序里面不同的执行路径</li>
+<li>比喻：一个厕所里面的不同坑位或者一个工厂里面的多个生产车间；</li>
+<li>维基百科：线程（英语：thread）是操作系统能够进行运算调度的最小单位。大部分情况下，它被包含在进程之中，是进程中的实际运作单位。</li>
+</ul>
+<h3 id="java中如何实现多线程"><a href="#java中如何实现多线程" class="headerlink" title="java中如何实现多线程"></a>java中如何实现多线程</h3><ol>
+<li><p>重写Thread的run方法</p>
+<pre class="line-numbers language-php"><code class="language-php">Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ @Override
+ <span class="token keyword">public</span> void <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"新线程1执行了"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>实现Runnable接口的run方法<br>``` php<br>Thread thread2 = new Thread(new Runnable() {<br> @Override<br> public void run() {</p>
+<pre><code> System.out.println(&quot;新线程2执行了&quot;);
+</code></pre><p> }<br>});<br>thread2.start();</p>
+</li>
+</ol>
+<p>//JDK1.8开始支持lambda语法，以上代码可以简写成下面这样<br>Thread thread2 = new Thread(() -&gt; {<br>    System.out.println(“新线程2执行了”);<br>});<br>thread2.start();<br>```</p>
+<h3 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h3><ol>
+<li>new：初始状态 - 线程被new出来时处于此种状态</li>
+<li>Runnable：就绪状态 - 当一个线程的start方法被调用或正在运行的线程CPU时间片耗尽或处于阻塞状态的线程满足了运行条件时处于此种状态。就绪状态的线程处于CPU调度队列中等待获得CPU时间片执行。</li>
+<li>Running：运行状态 - 处于就绪状态的线程获取到CPU时间片，正在执行。</li>
+<li>Blocked：阻塞状态 - 当线程要执行的必要条件无法满足时处于此种状态，如等待其他线程释放锁、等待IO等。当这些条件得到满足后线程变为就绪状态。</li>
+<li>Dead：死亡状态 - 当线程run方法执行完或者遇到异常退出时线程死亡，线程的生命周期就此终止。<br><img src="http://daijunooo-img.test.upcdn.net/blog/thread.jpg" alt="image"></li>
+</ol>
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><ul>
+<li>join：当在一个线程A中调用另一个线程B的join方法时，线程A会等待线程B执行完再进行执行。</li>
+<li>yield：发送一个通知给调度器表示当前线程愿意让出CPU时间片给其他线程先执行，但是这种让步策略并不能得到保障，因为调度器可以选择忽视这个通知，这取决于当前下同的线程调度策略。</li>
+<li>sleep：使当前线程休眠指定时间，处于休眠的线程并不会放弃已经持有锁，放不放弃锁是sleep方法与wait方法的最大区别。</li>
+<li>setPriority：设置线程的优先级，传入一个1到10之间的整数，数值越大表示优先级越高，在一个母线程中创建一个子线程则子线程的优先级默认与母线程相同。</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
   </div>
 
   <footer class='footer'>
