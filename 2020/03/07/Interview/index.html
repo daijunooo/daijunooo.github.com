@@ -332,8 +332,8 @@
     label<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
     label<span class="token punctuation">.</span>label_name
 <span class="token constant">FROM</span>
-    label
-<span class="token constant">LEFT</span> <span class="token constant">JOIN</span> collect <span class="token constant">ON</span> label<span class="token punctuation">.</span>collect_id <span class="token operator">=</span> collect<span class="token punctuation">.</span>id
+    collect
+<span class="token constant">LEFT</span> <span class="token constant">JOIN</span> label <span class="token constant">ON</span> label<span class="token punctuation">.</span>collect_id <span class="token operator">=</span> collect<span class="token punctuation">.</span>id
 <span class="token constant">WHERE</span>
     collect<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">1</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -417,7 +417,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>改动后给label表的id，label_name字段加联合唯一索引，可以减少重复数据产生从而减少整表的数据增长（代码中需要做用户新增重复标签的逻辑处理），由于这个表就这两个字段，查询时会走索引覆盖，大大提高查询效率。</p>
+<p>改动后给label表的id，label_name字段加联合唯一索引，可以减少重复数据产生从而减少整表的数据增长（代码中需要做用户新增重复标签的逻辑处理），查询时会走索引覆盖，大大提高查询效率。</p>
 </blockquote>
 <h3 id="改动后上面的两个sql问题改写为如下："><a href="#改动后上面的两个sql问题改写为如下：" class="headerlink" title="改动后上面的两个sql问题改写为如下："></a>改动后上面的两个sql问题改写为如下：</h3><pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">//查询用户张丹的全部标签</span>
 <span class="token constant">SELECT</span>
@@ -448,6 +448,37 @@
     hot_sort <span class="token constant">DESC</span>
 <span class="token constant">LIMIT</span> <span class="token number">1</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="针对业务（问题1和2）可以继续优化"><a href="#针对业务（问题1和2）可以继续优化" class="headerlink" title="针对业务（问题1和2）可以继续优化"></a>针对业务（问题1和2）可以继续优化</h3><h3 id="增加用户与标签的关联表-user-label-relation"><a href="#增加用户与标签的关联表-user-label-relation" class="headerlink" title="增加用户与标签的关联表 user_label_relation"></a>增加用户与标签的关联表 user_label_relation</h3><table>
+<thead>
+<tr>
+<th>id</th>
+<th>user_id</th>
+<th>label_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="增加商品与标签的关联表-goods-label-relation"><a href="#增加商品与标签的关联表-goods-label-relation" class="headerlink" title="增加商品与标签的关联表 goods_label_relation"></a>增加商品与标签的关联表 goods_label_relation</h3><ul>
+<li>goods_id，label_id字段加联合唯一索引（插入数据时代码需要做逻辑处理），不同用户的重复数据用count来计数<br>id | goods_id | label_id | count<br>—|—|—|—<br>1  | 1 | 1 | 1<br>2  | 1 | 2 | 2</li>
+</ul>
+<blockquote>
+<p>增加了这个两个关联表后，问题1和2的sql语句会变得简单，减少了join连表。提高了查询效率，但同时也会增加新增编辑时的处理逻辑。优化的方式有很多，比如可以把商品关联的标签全部存储在一个字段中，可以大大减少关联表的数据量，不过这都需要结合具体业务场景做取舍。</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>大部分的优化都需要根据业务来做，以上的优化案例是以增加数据冗余来提高查询效率的，也可以说是用写入的效率来换取读的效率，如果数据库写的压力较大以上的优化就不太适合了，但大部分系统都是读的压力较大。</li>
+<li>优化数据库就像整理衣服一样，如果衣服全堆在床上找起来就慢（全表扫描），按照颜色或款式分类后放入衣柜（范式设计），把衣服贴上序号记录在本子上（建立索引），衣服太多可以多搞几个不同颜色的衣柜（分库分表），平常经常要穿的衣服单独存放（加入缓存），买更高级的分类衣柜（换更好的数据库）。</li>
+</ul>
 
     </div>
     <hr />
