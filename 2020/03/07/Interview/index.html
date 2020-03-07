@@ -470,8 +470,32 @@
 </tbody>
 </table>
 <h3 id="增加商品与标签的关联表-goods-label-relation"><a href="#增加商品与标签的关联表-goods-label-relation" class="headerlink" title="增加商品与标签的关联表 goods_label_relation"></a>增加商品与标签的关联表 goods_label_relation</h3><ul>
-<li>goods_id，label_id字段加联合唯一索引（插入数据时代码需要做逻辑处理），不同用户的重复数据用count来计数<br>id | goods_id | label_id | count<br>—|—|—|—<br>1  | 1 | 1 | 1<br>2  | 1 | 2 | 2</li>
+<li>goods_id，label_id字段加联合唯一索引（插入数据时代码需要做逻辑处理），不同用户的重复数据用count来计数</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>goods_id</th>
+<th>label_id</th>
+<th>count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p>增加了这个两个关联表后，问题1和2的sql语句会变得简单，减少了join连表。提高了查询效率，但同时也会增加新增编辑时的处理逻辑。优化的方式有很多，比如可以把商品关联的标签全部存储在一个字段中，可以大大减少关联表的数据量，不过这都需要结合具体业务场景做取舍。</p>
 </blockquote>
