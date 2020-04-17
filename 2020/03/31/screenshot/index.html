@@ -239,8 +239,9 @@
     <!-- Content -->
     <div class='article-content'>
     <h1 id="screenshot"><a href="#screenshot" class="headerlink" title="screenshot"></a>screenshot</h1><p>网页截图服务，用于生成小程序海报。(mac系统暂未适配)</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre><code>composer require tommy-dai/screenshot
-</code></pre><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h4 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token variable">$screenshot</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>ScreenShot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre class="line-numbers language-php"><code class="language-php">composer <span class="token keyword">require</span> tommy<span class="token operator">-</span>dai<span class="token operator">/</span>screenshot
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h4 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token variable">$screenshot</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>ScreenShot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token variable">$screenshot</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">shot</span><span class="token punctuation">(</span>'http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//image.baidu.com');</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <blockquote>
