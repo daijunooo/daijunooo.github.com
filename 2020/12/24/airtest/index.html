@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>把玩一下airtest - Tommy Dai</title>
+  
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="/images/favicon.ico" />
+  <link rel="bookmark"href="/images/favicon.ico" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2020/12/24/airtest/" data-name='把玩一下airtest' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2020/12/24/airtest/">
+                把玩一下Airtest
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2020-12-24
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/fun/">#Fun</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <blockquote>
+<p>最近有朋友咨询我抖音机器人怎么实现，带着好奇我调研了一下。有两个方案：1.安卓 xposed，在抖音运行的时候动态劫持。2.airtest自动化测试控制手机，底层是adb命令。</p>
+</blockquote>
+<h1 id="安装AirtestIDE"><a href="#安装AirtestIDE" class="headerlink" title="安装AirtestIDE"></a>安装AirtestIDE</h1><ul>
+<li>安装好后照着官方文档很容易跑通。</li>
+<li>本文主要研究脱离AirtestIDE运行</li>
+</ul>
+<h1 id="安装python环境和相关依赖"><a href="#安装python环境和相关依赖" class="headerlink" title="安装python环境和相关依赖"></a>安装python环境和相关依赖</h1><pre class="line-numbers language-php"><code class="language-php">pip install airtest
+pip install pocoui
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="写测试代码"><a href="#写测试代码" class="headerlink" title="写测试代码"></a>写测试代码</h1><ul>
+<li>tiktok.py</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token shell-comment comment"># -*- encoding=utf8 -*-</span>
+
+from airtest<span class="token punctuation">.</span>core<span class="token punctuation">.</span>api import <span class="token operator">*</span>
+from poco<span class="token punctuation">.</span>drivers<span class="token punctuation">.</span>android<span class="token punctuation">.</span>uiautomation import AndroidUiautomationPoco
+from multiprocessing import Pool
+
+
+def <span class="token function">run</span><span class="token punctuation">(</span>device<span class="token punctuation">,</span> app<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token function">auto_setup</span><span class="token punctuation">(</span>__file__<span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 连接信息</span>
+    connect <span class="token operator">=</span> "Android<span class="token punctuation">:</span><span class="token comment" spellcheck="true">///" + device + "?cap_method=JAVACAP&amp;&amp;ori_method=ADBORI&amp;&amp;touch_method=ADBTOUCH"</span>
+
+    <span class="token shell-comment comment"># 连接设备</span>
+    dev <span class="token operator">=</span> <span class="token function">connect_device</span><span class="token punctuation">(</span>connect<span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 生成当前设备的poco</span>
+    poco <span class="token operator">=</span> <span class="token function">AndroidUiautomationPoco</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 触发手机HOME键</span>
+    <span class="token function">keyevent</span><span class="token punctuation">(</span><span class="token string">"HOME"</span><span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 点击抖音App</span>
+    <span class="token function">poco</span><span class="token punctuation">(</span>text<span class="token operator">=</span>app<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 等待10秒</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 自动刷抖音</span>
+    <span class="token keyword">while</span> True<span class="token punctuation">:</span>
+        <span class="token function">swipe</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">160</span><span class="token punctuation">,</span> <span class="token number">400</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">160</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+
+    <span class="token shell-comment comment"># 创建4个进程</span>
+    p <span class="token operator">=</span> <span class="token function">Pool</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
+
+    <span class="token shell-comment comment"># 调用run方法连接手机控制手机</span>
+    p<span class="token punctuation">.</span><span class="token function">apply_async</span><span class="token punctuation">(</span>run<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"127.0.0.1:21503"</span><span class="token punctuation">,</span> <span class="token string">"抖音极速版"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span><span class="token function">apply_async</span><span class="token punctuation">(</span>run<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"127.0.0.1:21513"</span><span class="token punctuation">,</span> <span class="token string">"抖音短视频"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span><span class="token function">apply_async</span><span class="token punctuation">(</span>run<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"127.0.0.1:21523"</span><span class="token punctuation">,</span> <span class="token string">"抖音短视频"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span><span class="token function">apply_async</span><span class="token punctuation">(</span>run<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"127.0.0.1:21533"</span><span class="token punctuation">,</span> <span class="token string">"抖音短视频"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="运行代码"><a href="#运行代码" class="headerlink" title="运行代码"></a>运行代码</h1><pre class="line-numbers language-php"><code class="language-php">python tiktok<span class="token punctuation">.</span>py
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>文档中用airtest run方式运行，不方便实现一台电脑控制多台手机，直接把连接信息写到代码中，用python运行。</li>
+<li>一般第一次运行有可能报adb版本问题，直接拷贝adb.exe可以解决</li>
+<li>Android:///127.0.0.1:21503 这种写法文档中有但容易被忽略</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2020</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
