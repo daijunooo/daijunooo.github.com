@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>laradock 搞定php各种环境 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2019/01/08/docker/" data-name='laradock 搞定php各种环境' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2019/01/08/docker/">
+                Laradock 搞定Php各种环境
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2019-01-08
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/docker/">#Docker</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><ul>
+<li>百度安装，不是本文重点所以略过</li>
+</ul>
+<h1 id="获取最新laradock"><a href="#获取最新laradock" class="headerlink" title="获取最新laradock"></a>获取最新laradock</h1><pre class="line-numbers language-php"><code class="language-php">git clone https<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//github.com/laradock/laradock.git</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="修改环境参数"><a href="#修改环境参数" class="headerlink" title="修改环境参数"></a>修改环境参数</h1><ol>
+<li>cd 到克隆下来的 laradock 目录下</li>
+<li>cp env-example .env</li>
+<li>修改 .env 环境参数，例如 PHP_VERSION=7.1 改为 PHP_VERSION=5.6 ，php的版本就变成5.6版本了</li>
+<li>修改其他参数为你需要的环境版本</li>
+</ol>
+<h1 id="构建环境并运行"><a href="#构建环境并运行" class="headerlink" title="构建环境并运行"></a>构建环境并运行</h1><pre class="line-numbers language-php"><code class="language-php">docker<span class="token operator">-</span>compose up <span class="token operator">-</span>d nginx mysql
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>注意：所有Web服务器容器nginx，apache..依赖于php-fpm，这意味着如果您运行其中任何一个，它们将自动php-fpm为您启动容器，因此无需在up命令中明确指定它。</p>
+</blockquote>
+<ul>
+<li>至此一个php环境就搭建好了，并且可以自由组合服务器端软件及版本，作为开发环境用也十分方便。</li>
+</ul>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">//构建环境并使用</span>
+docker<span class="token operator">-</span>compose up <span class="token operator">-</span>d nginx mysql
+<span class="token comment" spellcheck="true">//重建环境</span>
+docker<span class="token operator">-</span>compose build workspace
+<span class="token comment" spellcheck="true">//重建php-fpm</span>
+docker<span class="token operator">-</span>compose build php<span class="token operator">-</span>fpm
+<span class="token comment" spellcheck="true">//删除所有现有容器</span>
+docker<span class="token operator">-</span>compose down
+<span class="token comment" spellcheck="true">//进入当前命令行</span>
+docker<span class="token operator">-</span>compose exec workspace bash
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>注意：应该添加–user=laradock（示例docker-compose exec –user=laradock workspace bash）将文件创建为主机用户以防止日志文件的问题所有者将更改为root，然后如果使用旋转日志并且新日志文件不存在则laravel网站无法写入日志文件</li>
+<li>docker-compose命令得进入laradock目录才能执行</li>
+</ul>
+<p><a href="https://laradock.io/" target="_blank" rel="noopener">更详细的内容请戳这里</a></p>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

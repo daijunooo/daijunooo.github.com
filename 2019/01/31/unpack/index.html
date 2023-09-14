@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>php反编译微信小程序浅析 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2019/01/31/unpack/" data-name='php反编译微信小程序浅析' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2019/01/31/unpack/">
+                Php反编译微信小程序浅析
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2019-01-31
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/fun/">#Fun</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h3 id="此文由来"><a href="#此文由来" class="headerlink" title="此文由来"></a>此文由来</h3><ul>
+<li>百度搜索 “反编译微信小程序” 能得到一大堆教程，github有一个是用php实现的反编译程序，以前没接触过此类开发，就clone下来分析了一下源码。</li>
+<li>源码地址: <a href="https://github.com/Clarence-pan/unpack-wxapkg" target="_blank" rel="noopener">unpack-wxapkg</a></li>
+</ul>
+<h3 id="原理概述"><a href="#原理概述" class="headerlink" title="原理概述"></a>原理概述</h3><ul>
+<li>通过一些手段可以获取到小程序的源码包wxapkg文件，用编辑器sublime打开这个文件里面是一大堆16进制。通过php代码读取这个文件，根据一定的规则去把这个打包后的文件还原成项目目录和代码。</li>
+<li>wxapkg文件是明文存储的，所以为反编译提供了可能和便利。用在线16进制转字符串工具转换后可以看到部分文件信息。</li>
+<li>一般的二进制文件里储存了大量的offset和size的数据作为数据段的索引。最关键的所谓offset，就是目标数据在文件中的实际位置了，一般是ulong的数据，实际就是一个指针。一般读取文件时会先找到一个offset，然后file.seek(offset)到对应的位置然后接着读区。对于较为复杂的文件格式，offset飞来飞去非常频繁。同样，大部分储存了offset的地方也储存了size的，用于校验数据避免指针越界嘛。因此，一旦我们可以确认一个文件中某一段数据段，就可以通过它的位置（offset）和大小（size）的实际数据进行搜索，逆向找到指向它的数据位置，并且继续逆向直到解析完整的文件。</li>
+</ul>
+<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><h4 id="字节序"><a href="#字节序" class="headerlink" title="字节序"></a>字节序</h4><ul>
+<li>字节序，简单来说，就是指超过一个字节的数据类型在内存中存储的顺序</li>
+<li>通俗理解古人写字是自上而下从右往左，我们现代人是从左往右一行一行往下写。计算机存数据时也分顺序😂</li>
+<li>计算机存数据时也分为两种：大端序（Big endian）、小端序（Little endian）</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+<span class="token comment" spellcheck="true">// 大端序存储十进制数4660，转成十六进制后0x1234</span>
+<span class="token keyword">echo</span> <span class="token function">bin2hex</span><span class="token punctuation">(</span><span class="token function">pack</span><span class="token punctuation">(</span><span class="token string">'n'</span><span class="token punctuation">,</span> <span class="token number">0x1234</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token string">'&lt;br>'</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 小端序存储十进制数4660</span>
+<span class="token keyword">echo</span> <span class="token function">bin2hex</span><span class="token punctuation">(</span><span class="token function">pack</span><span class="token punctuation">(</span><span class="token string">'v'</span><span class="token punctuation">,</span> <span class="token number">0x1234</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>运行后输出</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token number">1234</span>
+<span class="token number">3412</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>1234这种符合人类阅读的方式称之为大端序，但是计算机处理起来方便的是小端序3412，因此计算机内部一般都使用小端序又叫主机序，人类设计的协议等一般都使用大端序。</li>
+<li>因此人类和计算机之间就需要转换</li>
+</ul>
+<h3 id="原理解析-源码包wxapkg文件部分内容-前10行"><a href="#原理解析-源码包wxapkg文件部分内容-前10行" class="headerlink" title="原理解析:源码包wxapkg文件部分内容(前10行)"></a>原理解析:源码包wxapkg文件部分内容(前10行)</h3><pre class="line-numbers language-txt"><code class="language-txt">be00 0000 0000 001f 1200 29cc efed 0000
+0095 0000 0010 2f61 7070 2d63 6f6e 6669
+672e 6a73 6f6e 0000 1f20 0000 c9c2 0000
+000f 2f61 7070 2d73 6572 7669 6365 2e6a
+7300 00e8 e200 1436 9200 0000 1f2f 636f
+6d70 6f6e 656e 742f 4261 636b 4274 6e2f
+4261 636b 4274 6e2e 6874 6d6c 0015 1f74
+0000 0147 0000 001b 2f63 6f6d 706f 6e65
+6e74 2f43 5f62 7579 2f43 5f62 7579 2e68
+746d 6c00 1520 bb00 0001 3f00 0000 212f
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>乍看这什么玩意，有人分析出了这个文件的结构,见下表</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>段</th>
+<th>名称</th>
+<th>类型</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>header</td>
+<td>firstMark</td>
+<td>Ushort</td>
+<td>一定是190</td>
+</tr>
+<tr>
+<td>header</td>
+<td>info</td>
+<td>Ulong</td>
+<td>作用未知，总是0</td>
+</tr>
+<tr>
+<td>header</td>
+<td>indexInfoLength</td>
+<td>Ulong</td>
+<td>索引段长度，用于校验</td>
+</tr>
+<tr>
+<td>header</td>
+<td>bodyInfoLength</td>
+<td>Ulong</td>
+<td>数据段长度，用于校验</td>
+</tr>
+<tr>
+<td>header</td>
+<td>lastMark</td>
+<td>Ushort</td>
+<td>一定是237</td>
+</tr>
+<tr>
+<td>header</td>
+<td>fileCount</td>
+<td>Ulong</td>
+<td>文件数目</td>
+</tr>
+<tr>
+<td>index</td>
+<td>nameLength</td>
+<td>Ulong</td>
+<td>文件名长度</td>
+</tr>
+<tr>
+<td>index</td>
+<td>name</td>
+<td>Char*</td>
+<td>长度为nameLength</td>
+</tr>
+<tr>
+<td>index</td>
+<td>offset</td>
+<td>Ulong</td>
+<td>文件在数据段位置</td>
+</tr>
+<tr>
+<td>index</td>
+<td>size</td>
+<td>Ulong</td>
+<td>文件大小</td>
+</tr>
+<tr>
+<td>data</td>
+<td></td>
+<td></td>
+<td>文件数据</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>这个表格最关键的部分就是 header 和 index 段，这两段就决定了整个数据段是什么结构。</li>
+<li>用这个表格给出的规则就可以解出源码包wxapkg文件的内容。</li>
+</ul>
+<blockquote>
+<p>unpack 函数用于解包，参数1就是刚刚提过的字节序相关内容，参数2是字符串<br>上面表格 header 第一行的类型是 Ushort ，对应 unpack 的参数就是 C<br>Ushort是1个字节，所以从源码包wxapkg文件中取前1个字节就是 be ，由于 unpack 参数2需要传字符串，转换后 “\xbe”</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+<span class="token function">print_r</span><span class="token punctuation">(</span><span class="token function">unpack</span><span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">"\xbe"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>运行后打印</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">Array</span>
+<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token number">190</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>结果正好是190，符合上表的第一行的说明</li>
+</ul>
+<blockquote>
+<p>如果我现在想获取文件数目，结合表格给出的信息<br>fileCount之前依次有lastMark（1字节）、bodyInfoLength（4字节）、indexInfoLength（4字节）、info（4字节）、firstMark（1字节）<br>应从第15个字节开始，fileCount（Ulong）取4个字节，就是0000 0095</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+<span class="token function">print_r</span><span class="token punctuation">(</span><span class="token function">unpack</span><span class="token punctuation">(</span><span class="token string">'N'</span><span class="token punctuation">,</span> <span class="token string">"\x00\x00\x00\x95"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+结果：
+<span class="token keyword">Array</span>
+<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token number">149</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>获取第一个文件的文件名长度</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+<span class="token function">print_r</span><span class="token punctuation">(</span><span class="token function">unpack</span><span class="token punctuation">(</span><span class="token string">'N'</span><span class="token punctuation">,</span> <span class="token string">"\x00\x00\x00\x10"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+结果：
+<span class="token keyword">Array</span>
+<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token number">16</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>利用上面获取的文件名长度获取第一个文件的文件名<br>取16字节文件名数据 2f61 7070 2d63 6f6e 6669 672e 6a73 6f6e</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+<span class="token function">print_r</span><span class="token punctuation">(</span><span class="token function">unpack</span><span class="token punctuation">(</span><span class="token string">'a*'</span><span class="token punctuation">,</span> <span class="token string">"\x2f\x61\x70\x70\x2d\x63\x6f\x6e\x66\x69\x67\x2e\x6a\x73\x6f\x6e"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+结果：
+<span class="token keyword">Array</span>
+<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">/</span>app<span class="token operator">-</span>config<span class="token punctuation">.</span>json
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>其他信息也可以继续通过这种方式一一解析出来<br>根据 header 和 index 信息可以完整还原出源码包wxapkg文件的项目目录和代码</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>解包的核心就是php提供的unpack函数，与之对应的还有个pack函数，用于打包操作</li>
+<li>解包的关键点就是上边网友分析的文件结构和unpack的参数1的选取</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>Spring Boot 原理 + 简单实现 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2019/08/27/springmvcdemo/" data-name='Spring Boot 原理 + 简单实现' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2019/08/27/springmvcdemo/">
+                Spring Boot 原理 + 简单实现
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/java/" data-no-instant>
+                    <img src="/images/java.svg" alt="java" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2019-08-27
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/java/">#Java</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <ul>
+<li>最近看了一下 Spring Boot 框架底层原理，发现和 Laravel 框架的开发思想如出一辙，有了对 Laravel 框架的了解，看 Spring 轻松不少。</li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li>解析代码中的注解，利用反射技术处理不同注解，完成Ioc初始化和注入，继承servlet处理请求和响应数据。</li>
+</ul>
+<blockquote>
+<p>Ioc容器是核心，可以理解为一个HashMap里面保存了所有类的实例，可以根据Key随时拿到我们要的对象。</p>
+</blockquote>
+<h3 id="Ioc容器是什么样"><a href="#Ioc容器是什么样" class="headerlink" title="Ioc容器是什么样"></a>Ioc容器是什么样</h3><pre class="line-numbers language-php"><code class="language-php">Map<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>String,</span> <span class="token attr-name">Object</span><span class="token punctuation">></span></span></span> ioc <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>不要想复杂了，这就是个Ioc容器</li>
+</ul>
+<h3 id="如何处理-Controller-注解"><a href="#如何处理-Controller-注解" class="headerlink" title="如何处理 @Controller 注解"></a>如何处理 @Controller 注解</h3><pre class="line-numbers language-php"><code class="language-php">@Controller
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Spring会把 @Controller 注解的类直接通过反射实例化保存到Ioc容器中，并把类名（Index）作为Key</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span> classObject <span class="token operator">=</span> <span class="token keyword">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"Index"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//isAnnotationPresent: B类型的注解是否在A类上,此处判断 @Controller 注解是否在 Index 类上</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>classObject<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Controller<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ioc<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"Index"</span><span class="token punctuation">,</span> classObject<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="如何处理-Service-注解"><a href="#如何处理-Service-注解" class="headerlink" title="如何处理 @Service 注解"></a>如何处理 @Service 注解</h3><pre class="line-numbers language-php"><code class="language-php">@Service
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IndexImpl</span> <span class="token keyword">implements</span> <span class="token class-name">IndexService</span> <span class="token punctuation">{</span>
+    @Override
+    <span class="token keyword">public</span> String <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Hello Spring"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Spring会把 @Service 注解的类直接通过反射实例化保存到Ioc容器中,并把它实现的接口名（IndexService）作为Key</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span> classObject <span class="token operator">=</span> <span class="token keyword">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"IndexImpl"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>classObject<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Service<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Service service <span class="token operator">=</span> classObject<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>Service<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String beanName <span class="token operator">=</span> service<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces <span class="token operator">=</span> classObject<span class="token punctuation">.</span><span class="token function">getInterfaces</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span> i <span class="token punctuation">:</span> interfaces<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ioc<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> classObject<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="如何处理-RequestMapping-注解"><a href="#如何处理-RequestMapping-注解" class="headerlink" title="如何处理 @RequestMapping 注解"></a>如何处理 @RequestMapping 注解</h3><pre class="line-numbers language-php"><code class="language-php">@Controller
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">{</span>
+    @<span class="token function">RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> String <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Hello Spring"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>这里就不贴代码了，它依然是通过反射记录url到method的映射关系<br>包括@Autowired注解也是同样道理，通过反射将依赖注入到field</p>
+</blockquote>
+<h3 id="通过代码简单模拟-Spring-Boot"><a href="#通过代码简单模拟-Spring-Boot" class="headerlink" title="通过代码简单模拟 Spring Boot"></a>通过代码简单模拟 Spring Boot</h3><ul>
+<li>首先请确保已自行安装好tomcat</li>
+<li>推荐使用IDEA编辑器</li>
+</ul>
+<h4 id="Step-1-新建Java-Web项目"><a href="#Step-1-新建Java-Web项目" class="headerlink" title="Step 1 新建Java Web项目"></a>Step 1 新建Java Web项目</h4><ul>
+<li>New Project -&gt; Java Enterprise -&gt; 勾选Web Application<h5 id="项目结构如下"><a href="#项目结构如下" class="headerlink" title="项目结构如下"></a>项目结构如下</h5><img src="https://s1.ax1x.com/2020/04/02/GYwOIO.png" alt="image"></li>
+</ul>
+<h4 id="Step-2-配置阶段"><a href="#Step-2-配置阶段" class="headerlink" title="Step 2 配置阶段"></a>Step 2 配置阶段</h4><h5 id="1-创建-MyDispatchServlet-类继承-HttpServlet，重写init-、doGet-和doPost-方法。"><a href="#1-创建-MyDispatchServlet-类继承-HttpServlet，重写init-、doGet-和doPost-方法。" class="headerlink" title="1. 创建 MyDispatchServlet 类继承 HttpServlet，重写init()、doGet()和doPost()方法。"></a>1. 创建 MyDispatchServlet 类继承 HttpServlet，重写init()、doGet()和doPost()方法。</h5><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyDispatchServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    @Override
+    <span class="token keyword">protected</span> void <span class="token function">doGet</span><span class="token punctuation">(</span>HttpServletRequest req<span class="token punctuation">,</span> HttpServletResponse resp<span class="token punctuation">)</span> throws ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
+        <span class="token function">doPost</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @Override
+    <span class="token keyword">protected</span> void <span class="token function">doPost</span><span class="token punctuation">(</span>HttpServletRequest req<span class="token punctuation">,</span> HttpServletResponse resp<span class="token punctuation">)</span> throws ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    @Override
+    <span class="token keyword">public</span> void <span class="token function">init</span><span class="token punctuation">(</span>ServletConfig config<span class="token punctuation">)</span> throws ServletException <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-在-web-xml-添加配置，将所有请求交给创建的-MyDispatchServlet-处理"><a href="#2-在-web-xml-添加配置，将所有请求交给创建的-MyDispatchServlet-处理" class="headerlink" title="2. 在 web.xml 添加配置，将所有请求交给创建的 MyDispatchServlet 处理"></a>2. 在 web.xml 添加配置，将所有请求交给创建的 MyDispatchServlet 处理</h5><pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?</span>xml version<span class="token operator">=</span><span class="token string">"1.0"</span> encoding<span class="token operator">=</span><span class="token string">"UTF-8"</span><span class="token delimiter">?></span>
+<span class="token operator">&lt;</span>web<span class="token operator">-</span>app xmlns<span class="token operator">=</span>"http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//xmlns.jcp.org/xml/ns/javaee"</span>
+         xmlns<span class="token punctuation">:</span>xsi<span class="token operator">=</span>"http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//www.w3.org/2001/XMLSchema-instance"</span>
+         xsi<span class="token punctuation">:</span>schemaLocation<span class="token operator">=</span>"http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"</span>
+         version<span class="token operator">=</span><span class="token string">"4.0"</span><span class="token operator">></span>
+
+    <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">></span></span></span>mvc<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-class</span><span class="token punctuation">></span></span></span>com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>MyDispatchServlet<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-class</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>init-param</span><span class="token punctuation">></span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-name</span><span class="token punctuation">></span></span></span>contextConfigLocation<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-name</span><span class="token punctuation">></span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param-value</span><span class="token punctuation">></span></span></span><span class="token operator">/</span><span class="token constant">WEB</span><span class="token operator">-</span><span class="token constant">INF</span><span class="token operator">/</span>application<span class="token punctuation">.</span>properties<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param-value</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>init-param</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>load-on-startup</span><span class="token punctuation">></span></span></span><span class="token number">1</span><span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>load-on-startup</span><span class="token punctuation">></span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet</span><span class="token punctuation">></span></span></span>
+
+    <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-mapping</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servlet-name</span><span class="token punctuation">></span></span></span>mvc<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-name</span><span class="token punctuation">></span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url-pattern</span><span class="token punctuation">></span></span></span><span class="token operator">/</span><span class="token operator">*</span><span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url-pattern</span><span class="token punctuation">></span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servlet-mapping</span><span class="token punctuation">></span></span></span>
+<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>web-app</span><span class="token punctuation">></span></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>在<init-param>中配置了一个初始化加载Spring主配置文件路径，application.properties文件放在/WEB-INF/下，内容如下：</init-param></li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">scanPackage<span class="token operator">=</span>com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>demo
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="3-定义注解"><a href="#3-定义注解" class="headerlink" title="3. 定义注解"></a>3. 定义注解</h5><ul>
+<li>@Controller注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">;</span>
+
+import java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+@<span class="token function">Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span><span class="token constant">FIELD</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+@<span class="token function">Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+@Documented
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Autowired</span> <span class="token punctuation">{</span>
+    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>@Autowired注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">;</span>
+
+import java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+@<span class="token function">Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span><span class="token constant">FIELD</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+@<span class="token function">Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+@Documented
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Autowired</span> <span class="token punctuation">{</span>
+    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>@RequestMapping</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">;</span>
+
+import java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+@<span class="token function">Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">,</span> ElementType<span class="token punctuation">.</span><span class="token constant">METHOD</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+@<span class="token function">Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+@Documented
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">RequestMapping</span> <span class="token punctuation">{</span>
+    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>@Service</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">;</span>
+
+import java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+@<span class="token function">Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+@<span class="token function">Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+@Documented
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Service</span> <span class="token punctuation">{</span>
+    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-使用注解"><a href="#4-使用注解" class="headerlink" title="4. 使用注解"></a>4. 使用注解</h5><ul>
+<li>创建控制器并使用@Controller,@Autowired,@RequestMapping注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>demo<span class="token punctuation">;</span>
+
+import com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Autowired<span class="token punctuation">;</span>
+import com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Controller<span class="token punctuation">;</span>
+import com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>RequestMapping<span class="token punctuation">;</span>
+
+@Controller
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoController</span> <span class="token punctuation">{</span>
+
+    @Autowired
+    <span class="token keyword">private</span> DemoService service<span class="token punctuation">;</span>
+
+    @<span class="token function">RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> String <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> service<span class="token punctuation">.</span><span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>创建Service接口</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>demo<span class="token punctuation">;</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">DemoService</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> String <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>实现Service接口并使用@service注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">package com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>demo<span class="token punctuation">;</span>
+
+import com<span class="token punctuation">.</span>mvc<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Service<span class="token punctuation">;</span>
+
+@Service
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoImpl</span> <span class="token keyword">implements</span> <span class="token class-name">DemoService</span> <span class="token punctuation">{</span>
+    @Override
+    <span class="token keyword">public</span> String <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Hello Spring"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="Step-3-初始化阶段"><a href="#Step-3-初始化阶段" class="headerlink" title="Step 3 初始化阶段"></a>Step 3 初始化阶段</h4><h5 id="1-声明Ioc容器、url映射关系和其他配置相关信息"><a href="#1-声明Ioc容器、url映射关系和其他配置相关信息" class="headerlink" title="1. 声明Ioc容器、url映射关系和其他配置相关信息"></a>1. 声明Ioc容器、url映射关系和其他配置相关信息</h5><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyDispatchServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">//保存所有扫描到的相关类</span>
+    <span class="token keyword">public</span> List<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>String</span><span class="token punctuation">></span></span></span> classes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//保存所有初始化的bean</span>
+    <span class="token keyword">public</span> Map<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>String,</span> <span class="token attr-name">Object</span><span class="token punctuation">></span></span></span> ioc <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//保存所有url和method的映射关系</span>
+    <span class="token keyword">public</span> Map<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>String,</span> <span class="token attr-name">Method</span><span class="token punctuation">></span></span></span> urls <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//和web.xml里init-param的值一致</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String <span class="token constant">LOCATION</span> <span class="token operator">=</span> <span class="token string">"contextConfigLocation"</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//保存配置的所有信息</span>
+    <span class="token keyword">private</span> Properties config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-重写init方法，实现拿到主配置文件的路径，读取配置文件中的信息，扫描所有相关的类，初始化相关类的实例并保存到IOC容器，从ICO容器取出对应的实例给字段赋值，即依赖注入，最后将url和Method进行关联。"><a href="#2-重写init方法，实现拿到主配置文件的路径，读取配置文件中的信息，扫描所有相关的类，初始化相关类的实例并保存到IOC容器，从ICO容器取出对应的实例给字段赋值，即依赖注入，最后将url和Method进行关联。" class="headerlink" title="2. 重写init方法，实现拿到主配置文件的路径，读取配置文件中的信息，扫描所有相关的类，初始化相关类的实例并保存到IOC容器，从ICO容器取出对应的实例给字段赋值，即依赖注入，最后将url和Method进行关联。"></a>2. 重写init方法，实现拿到主配置文件的路径，读取配置文件中的信息，扫描所有相关的类，初始化相关类的实例并保存到IOC容器，从ICO容器取出对应的实例给字段赋值，即依赖注入，最后将url和Method进行关联。</h5><pre class="line-numbers language-php"><code class="language-php">@Override
+<span class="token keyword">public</span> void <span class="token function">init</span><span class="token punctuation">(</span>ServletConfig config<span class="token punctuation">)</span> throws ServletException <span class="token punctuation">{</span>
+
+    super<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//加载配置文件</span>
+    <span class="token function">loadConfig</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span><span class="token function">getInitParameter</span><span class="token punctuation">(</span><span class="token constant">LOCATION</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//扫描所有相关类</span>
+    <span class="token function">scanner</span><span class="token punctuation">(</span>this<span class="token punctuation">.</span>config<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"scanPackage"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//初始化所有相关类的实例保存到IOC容器中(Controller)</span>
+    <span class="token function">initIoc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//依赖注入(Service)</span>
+    <span class="token function">initDi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//生成url映射(RequestMapping)</span>
+    <span class="token function">initUrl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>loadConfig获取主配置文件路径，读取内容保存到Properties对象中：</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">private</span> void <span class="token function">loadConfig</span><span class="token punctuation">(</span>String location<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    InputStream i <span class="token operator">=</span> <span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        config<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            i<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">NullPointerException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>scanner扫描相关类并保存</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">private</span> void <span class="token function">scanner</span><span class="token punctuation">(</span>String packageName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token constant">URL</span> url <span class="token operator">=</span> this<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token string">"/"</span> <span class="token operator">+</span> packageName<span class="token punctuation">.</span><span class="token function">replaceAll</span><span class="token punctuation">(</span><span class="token string">"\\."</span><span class="token punctuation">,</span> <span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    File dir <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>url<span class="token punctuation">.</span><span class="token function">getFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>File file <span class="token punctuation">:</span> dir<span class="token punctuation">.</span><span class="token function">listFiles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">isDirectory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">scanner</span><span class="token punctuation">(</span>packageName <span class="token operator">+</span> <span class="token string">"."</span> <span class="token operator">+</span> file<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            classes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>packageName <span class="token operator">+</span> <span class="token string">"."</span> <span class="token operator">+</span> file<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">".class"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>initIoc根据类名实例化，并放到IOC容器中,主要处理@Controller，@Service注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">private</span> void <span class="token function">initIoc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>classes<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>String className <span class="token punctuation">:</span> classes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span> classObject <span class="token operator">=</span> <span class="token keyword">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>classObject<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Controller<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                ioc<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>className<span class="token punctuation">,</span> classObject<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>classObject<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Service<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                Service service <span class="token operator">=</span> classObject<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>Service<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                String beanName <span class="token operator">=</span> service<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>beanName<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    ioc<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> classObject<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">continue</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces <span class="token operator">=</span> classObject<span class="token punctuation">.</span><span class="token function">getInterfaces</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span> i <span class="token punctuation">:</span> interfaces<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    ioc<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> classObject<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalAccessException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InstantiationException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>initDi将初始化到IOC容器中的类,赋值依赖注入字段，处理@Autowired注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">private</span> void <span class="token function">initDi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ioc<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Map<span class="token punctuation">.</span>Entry<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>String,</span> <span class="token attr-name">Object</span><span class="token punctuation">></span></span></span> entry <span class="token punctuation">:</span> ioc<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> entry<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token punctuation">:</span> fields<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Autowired<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            Autowired autowired <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>Autowired<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            String beanName <span class="token operator">=</span> autowired<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>beanName<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                beanName <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            field<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                field<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>entry<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ioc<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalAccessException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>initUrl将url和method进行映射，处理@RequestMapping注解</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">private</span> void <span class="token function">initUrl</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ioc<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Map<span class="token punctuation">.</span>Entry<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>String,</span> <span class="token attr-name">Object</span><span class="token punctuation">></span></span></span> entry <span class="token punctuation">:</span> ioc<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">Class</span><span class="token delimiter">&lt;?</span><span class="token operator">></span> className <span class="token operator">=</span> entry<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>className<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Controller<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        StringBuilder baseUrl <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>className<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>RequestMapping<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            RequestMapping requestMapping <span class="token operator">=</span> className<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>RequestMapping<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            baseUrl<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>requestMapping<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        Method<span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> className<span class="token punctuation">.</span><span class="token function">getMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Method method <span class="token punctuation">:</span> methods<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>method<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>RequestMapping<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            RequestMapping requestMapping <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>RequestMapping<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            String url <span class="token operator">=</span> baseUrl<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"/"</span> <span class="token operator">+</span> requestMapping<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">replaceAll</span><span class="token punctuation">(</span><span class="token string">"/+"</span><span class="token punctuation">,</span> <span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            urls<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> method<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>至此，初始化阶段的代码都已完成。</p>
+</blockquote>
+<h4 id="Step-4-运行阶段"><a href="#Step-4-运行阶段" class="headerlink" title="Step 4 运行阶段"></a>Step 4 运行阶段</h4><h5 id="在doGet方法调用doPost方法，在doPost方法中再调用doDispach-方法。"><a href="#在doGet方法调用doPost方法，在doPost方法中再调用doDispach-方法。" class="headerlink" title="在doGet方法调用doPost方法，在doPost方法中再调用doDispach()方法。"></a>在doGet方法调用doPost方法，在doPost方法中再调用doDispach()方法。</h5><pre class="line-numbers language-php"><code class="language-php">@Override
+<span class="token keyword">protected</span> void <span class="token function">doGet</span><span class="token punctuation">(</span>HttpServletRequest req<span class="token punctuation">,</span> HttpServletResponse resp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">doPost</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+@Override
+<span class="token keyword">protected</span> void <span class="token function">doPost</span><span class="token punctuation">(</span>HttpServletRequest req<span class="token punctuation">,</span> HttpServletResponse resp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token function">doDispatch</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="doDispatch处理所有请求，url请求不存在的返回404，通过url查找到对应的方法进行调用并返回。"><a href="#doDispatch处理所有请求，url请求不存在的返回404，通过url查找到对应的方法进行调用并返回。" class="headerlink" title="doDispatch处理所有请求，url请求不存在的返回404，通过url查找到对应的方法进行调用并返回。"></a>doDispatch处理所有请求，url请求不存在的返回404，通过url查找到对应的方法进行调用并返回。</h5><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">private</span> void <span class="token function">doDispatch</span><span class="token punctuation">(</span>HttpServletRequest req<span class="token punctuation">,</span> HttpServletResponse resp<span class="token punctuation">)</span> throws Exception <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>urls<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    String contextPath <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getContextPath</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String url <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getRequestURI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>contextPath<span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">replaceAll</span><span class="token punctuation">(</span><span class="token string">"/+"</span><span class="token punctuation">,</span> <span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>urls<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        resp<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"...404"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    Method method <span class="token operator">=</span> urls<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String beanName <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getDeclaringClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String result <span class="token operator">=</span> <span class="token punctuation">(</span>String<span class="token punctuation">)</span> method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>ioc<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    resp<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>至此，一个简单版的Spring就完成了，运行后，在浏览器输入：<a href="http://localhost:8080/hello，正常返回：Hello" target="_blank" rel="noopener">http://localhost:8080/hello，正常返回：Hello</a> Spring，输入其它地址则返回404。<br>不论注解还是xml配置，spring都是通过反射依赖注入，最终让我们有了一个好用的框架。通过这次实践让我彻底搞清楚了Spring底层原理</p>
+</blockquote>
+<h5 id="完整源码：https-github-com-daijunooo-spring-mvc-demo"><a href="#完整源码：https-github-com-daijunooo-spring-mvc-demo" class="headerlink" title="完整源码：https://github.com/daijunooo/spring_mvc_demo"></a>完整源码：<a href="https://github.com/daijunooo/spring_mvc_demo" target="_blank" rel="noopener">https://github.com/daijunooo/spring_mvc_demo</a></h5>
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

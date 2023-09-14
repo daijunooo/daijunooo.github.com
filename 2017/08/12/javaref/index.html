@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>java 反射之动态调用 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2017/08/12/javaref/" data-name='java 反射之动态调用' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2017/08/12/javaref/">
+                Java 反射之动态调用
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/java/" data-no-instant>
+                    <img src="/images/java.svg" alt="java" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2017-08-12
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/java/">#Java</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <blockquote>
+<p>在Java项目中根据参数不同动态调用不同的方法，如果参数个数或类型不同可以使用方法重载实现，可是偏偏我现在参数个数和类型是不会变的，仅仅是<br>参数的值变化，通过if判断是可以的，但是当后续业务足够复杂时，需要维护流程控制这部分代码。这个需求在php中是很容易实现的，在Java中我能想到的<br>只有反射了。</p>
+</blockquote>
+<h1 id="php中动态调用方法"><a href="#php中动态调用方法" class="headerlink" title="php中动态调用方法"></a>php中动态调用方法</h1><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name">Boy</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">echo</span> <span class="token string">"走吃鸡去！"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">echo</span> <span class="token string">"跑到网吧！"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token variable">$func</span> <span class="token operator">=</span> <span class="token string">"run"</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Boy</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token variable">$func</span><span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 执行结果：跑到网吧！</span>
+
+<span class="token variable">$func</span> <span class="token operator">=</span> <span class="token string">"say"</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Boy</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token variable">$func</span><span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 执行结果：走吃鸡去！</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="java中动态调用"><a href="#java中动态调用" class="headerlink" title="java中动态调用"></a>java中动态调用</h1><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Boy</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"走吃鸡去！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"跑到网吧！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+String func <span class="token operator">=</span> <span class="token string">"say"</span><span class="token punctuation">;</span>
+
+Method method <span class="token operator">=</span> Boy<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Object object <span class="token operator">=</span> Boy<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>object<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 执行结果：走吃鸡去！</span>
+
+String func <span class="token operator">=</span> <span class="token string">"run"</span><span class="token punctuation">;</span>
+
+Method method <span class="token operator">=</span> Boy<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Object object <span class="token operator">=</span> Boy<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>object<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 执行结果：跑到网吧！</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="动态调用有何意义？🤔️"><a href="#动态调用有何意义？🤔️" class="headerlink" title="动态调用有何意义？🤔️"></a>动态调用有何意义？🤔️</h1><blockquote>
+<p>完全可以使用if判断来动态调用<br>但是当业务逻辑足够复杂或多的时候，需要维护流程控制这部分代码<br>用反射就解耦的这部分流程控制的代码，可以说反射是java框架的核心<br>PHP中也有反射，一般框架层面会用到，日常开发几乎没见到过。</p>
+</blockquote>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

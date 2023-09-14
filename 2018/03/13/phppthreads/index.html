@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>php多线程开发 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2018/03/13/phppthreads/" data-name='php多线程开发' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2018/03/13/phppthreads/">
+                Php多线程开发
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/php/" data-no-instant>
+                    <img src="/images/php.svg" alt="php" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2018-03-13
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/php-高性能php开发/">#Php 高性能php开发</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h4 id="php多线程简介"><a href="#php多线程简介" class="headerlink" title="php多线程简介"></a>php多线程简介</h4><ul>
+<li>pthreads 是一组允许用户在 PHP 中使用多线程技术的面向对象的 API。 它提供了创建多线程应用所需的全套工具。 通过使用 Thread， Worker 以及 Threaded 对象，PHP 应用可以创建、读取、写入以及执行多线程应用，并可以在多个线程之间进行同步控制。<blockquote>
+<p>多线程的使用安全请自行查阅php官方文档，用在项目中请谨慎使用。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="1-安装pthreads扩展"><a href="#1-安装pthreads扩展" class="headerlink" title="1.安装pthreads扩展"></a>1.安装pthreads扩展</h4><ul>
+<li>此步骤不做说明，我相信大部分人都能自行解决，实在不行百度，安装过程略…</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name">AsyncOperation</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token variable">$arg</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">arg</span> <span class="token operator">=</span> <span class="token variable">$arg</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">arg</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello %s\n"</span><span class="token punctuation">,</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">arg</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token variable">$thread</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AsyncOperation</span><span class="token punctuation">(</span><span class="token string">"World"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$thread</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token variable">$thread</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//安装好后执行此脚本 如能看到“Hello World”说明扩展已安装成功</span>
+<span class="token comment" spellcheck="true">//或者通过  phpinfo()  查看是否有pthreads扩展，有一般也安装成功了</span>
+<span class="token comment" spellcheck="true">//再或者通过命令行  php -m  查看是否有pthreads扩展也可</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-多线程开发应用"><a href="#2-多线程开发应用" class="headerlink" title="2.多线程开发应用"></a>2.多线程开发应用</h4><ul>
+<li>一个简单的小栗子</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name">Cattle</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 输出当前线程ID</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">echo</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getCurrentThreadId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 当调用 Thread 对象的 start 方法时，该对象的 run 方法将在独立线程中并行执行。</span>
+<span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 代码执行结果是每隔一秒才输出一次线程ID</span>
+<span class="token comment" spellcheck="true">// 这样其实是同步阻塞的，并不是并行处理，这里其实有个大坑</span>
+<span class="token comment" spellcheck="true">// PHP内核中的垃圾回收器并不适用于pthreads的这种运行方式。</span>
+<span class="token comment" spellcheck="true">// 当你有需要被运行的对象(thread,stackables)时,或者有对象</span>
+<span class="token comment" spellcheck="true">// 需要被其它上下文获取时,你需要保留好对象的引用,直到它们不再被使用</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>正确的打开方式是这样的</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name">Cattle</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 输出当前线程ID</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">echo</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getCurrentThreadId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 开启 4 个线程</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$cattle</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 当调用 Thread 对象的 start 方法时，该对象的 run 方法将在独立线程中并行执行。</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$cattle</span> <span class="token keyword">as</span> <span class="token variable">$object</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">// 这里的 $object 就是对象的引用</span>
+    <span class="token variable">$object</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 代码执行结果是一秒后输出 4 个线程ID</span>
+<span class="token comment" spellcheck="true">// 这才是并行处理嘛</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>php 多线程只适用于命令行模式，以上代码在web模式下会有差异</li>
+<li>多线程对于写高性能应用是很有帮助的，并行计算，并行IO等等</li>
+<li>多线程还有其他一些用法和知识点，感兴趣可以自行研究一下</li>
+</ul>
+<h4 id="3-多线程解决计算密集型任务性能问题"><a href="#3-多线程解决计算密集型任务性能问题" class="headerlink" title="3.多线程解决计算密集型任务性能问题"></a>3.多线程解决计算密集型任务性能问题</h4><ul>
+<li>阿姆斯特朗数(俗称水仙花数)</li>
+<li>例如：1^3 + 5^3+ 3^3 = 153 这个就是水仙花数<blockquote>
+<p>用php实现求水仙花数，分别用单线程和双线程测试</p>
+</blockquote>
+</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token variable">$time1</span> <span class="token operator">=</span> <span class="token function">microtime</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">100000</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">// 位数长度</span>
+    <span class="token variable">$numLength</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 每个进制上的数</span>
+    <span class="token variable">$numArray</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$w</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$w</span> <span class="token operator">*</span><span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token variable">$numArray</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">floor</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">%</span> <span class="token variable">$w</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token variable">$w</span> <span class="token operator">/</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token variable">$w</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$numLength</span> <span class="token operator">=</span> <span class="token function">log10</span><span class="token punctuation">(</span><span class="token variable">$w</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 计算结果</span>
+    <span class="token variable">$countResult</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$numArray</span> <span class="token keyword">as</span> <span class="token variable">$num</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token variable">$countResult</span> <span class="token operator">+</span><span class="token operator">=</span> <span class="token function">pow</span><span class="token punctuation">(</span><span class="token variable">$num</span><span class="token punctuation">,</span> <span class="token variable">$numLength</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 判断是否是水仙花数</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$countResult</span> <span class="token operator">==</span> <span class="token variable">$i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">echo</span> <span class="token variable">$countResult</span><span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token variable">$time2</span> <span class="token operator">=</span> <span class="token function">microtime</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token string">'任务耗时：'</span><span class="token punctuation">,</span> <span class="token variable">$time2</span> <span class="token operator">-</span> <span class="token variable">$time1</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>用其他语言也可以试试，看看性能如何<blockquote>
+<p>下面用多线程实现一下</p>
+</blockquote>
+</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name">Cattle</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token variable">$start</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token variable">$end</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token variable">$start</span><span class="token punctuation">,</span> <span class="token variable">$end</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">start</span> <span class="token operator">=</span> <span class="token variable">$start</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">end</span> <span class="token operator">=</span> <span class="token variable">$end</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$time1</span> <span class="token operator">=</span> <span class="token function">microtime</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">start</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token markup">&lt; $this-></span>end<span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+            <span class="token comment" spellcheck="true">// 位数长度</span>
+            <span class="token variable">$numLength</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// 每个进制上的数</span>
+            <span class="token variable">$numArray</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$w</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$w</span> <span class="token operator">*</span><span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token variable">$numArray</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">floor</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">%</span> <span class="token variable">$w</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token variable">$w</span> <span class="token operator">/</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token variable">$w</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token variable">$numLength</span> <span class="token operator">=</span> <span class="token function">log10</span><span class="token punctuation">(</span><span class="token variable">$w</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 计算结果</span>
+            <span class="token variable">$countResult</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$numArray</span> <span class="token keyword">as</span> <span class="token variable">$num</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token variable">$countResult</span> <span class="token operator">+</span><span class="token operator">=</span> <span class="token function">pow</span><span class="token punctuation">(</span><span class="token variable">$num</span><span class="token punctuation">,</span> <span class="token variable">$numLength</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 判断是否是水仙花数</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$countResult</span> <span class="token operator">==</span> <span class="token variable">$i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">echo</span> <span class="token variable">$countResult</span><span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token variable">$time2</span> <span class="token operator">=</span> <span class="token function">microtime</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">echo</span> <span class="token string">'任务耗时：'</span><span class="token punctuation">,</span> <span class="token variable">$time2</span> <span class="token operator">-</span> <span class="token variable">$time1</span><span class="token punctuation">,</span> <span class="token string">"\n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 开启 2 个线程</span>
+<span class="token variable">$cattle</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">500000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$cattle</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cattle</span><span class="token punctuation">(</span><span class="token number">500000</span><span class="token punctuation">,</span> <span class="token number">1000000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$cattle</span> <span class="token keyword">as</span> <span class="token variable">$object</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$object</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>单线程和多线程运行结果</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">最大数<span class="token number">10</span>万
+单线程                              多线程
+<span class="token number">0</span>                                      <span class="token number">0</span>
+<span class="token number">1</span>                                      <span class="token number">1</span>
+<span class="token number">2</span>                                      <span class="token number">2</span>
+<span class="token number">3</span>                                      <span class="token number">3</span>
+<span class="token number">4</span>                                      <span class="token number">4</span>
+<span class="token number">5</span>                                      <span class="token number">5</span>
+<span class="token number">6</span>                                      <span class="token number">6</span>
+<span class="token number">7</span>                                      <span class="token number">7</span>
+<span class="token number">8</span>                                      <span class="token number">8</span>
+<span class="token number">9</span>                                      <span class="token number">9</span>
+<span class="token number">153</span>                                 <span class="token number">153</span>
+<span class="token number">370</span>                                 <span class="token number">370</span>
+<span class="token number">371</span>                                 <span class="token number">371</span>
+<span class="token number">407</span>                                 <span class="token number">407</span>
+<span class="token number">1634</span>                                <span class="token number">1634</span>
+<span class="token number">8208</span>                                <span class="token number">54748</span>
+<span class="token number">9474</span>                                <span class="token number">8208</span>
+<span class="token number">54748</span>                               <span class="token number">9474</span>
+<span class="token number">92727</span>                               <span class="token number">92727</span>
+<span class="token number">93084</span>                               <span class="token number">93084</span>
+任务耗时：<span class="token number">4.6810078620911</span>           任务耗时：<span class="token number">2.6842050552368</span> （线程<span class="token number">1</span>）
+                                     任务耗时：<span class="token number">2.7934041023254</span> （线程<span class="token number">2</span>）
+增加一个数量级，最大数<span class="token number">100</span>万测试结果
+
+<span class="token number">0</span>                                      <span class="token number">0</span>
+<span class="token number">1</span>                                      <span class="token number">1</span>
+<span class="token number">2</span>                                      <span class="token number">2</span>
+<span class="token number">3</span>                                      <span class="token number">3</span>
+<span class="token number">4</span>                                      <span class="token number">4</span>
+<span class="token number">5</span>                                      <span class="token number">5</span>
+<span class="token number">6</span>                                      <span class="token number">6</span>
+<span class="token number">7</span>                                      <span class="token number">7</span>
+<span class="token number">8</span>                                      <span class="token number">8</span>
+<span class="token number">9</span>                                      <span class="token number">9</span>
+<span class="token number">153</span>                                  <span class="token number">153</span>
+<span class="token number">370</span>                                  <span class="token number">370</span>
+<span class="token number">371</span>                                  <span class="token number">371</span>
+<span class="token number">407</span>                                  <span class="token number">407</span>
+<span class="token number">1634</span>                                  <span class="token number">1634</span>
+<span class="token number">8208</span>                                  <span class="token number">8208</span>
+<span class="token number">9474</span>                                  <span class="token number">9474</span>
+<span class="token number">54748</span>                                  <span class="token number">54748</span>
+<span class="token number">92727</span>                                  <span class="token number">548834</span>
+<span class="token number">93084</span>                                  <span class="token number">92727</span>
+<span class="token number">548834</span>                              <span class="token number">93084</span>
+任务耗时：<span class="token number">56.342707872391</span>              任务耗时：<span class="token number">32.016864061356</span>
+                                      任务耗时：<span class="token number">33.077666044235</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ul>
+<li>多线程并行处理确实对性能有提升，测试还用了4线程</li>
+<li>但是并没有2线程效率好，测试电脑是公司的台式机</li>
+<li>cpu是G2030，主频3.0Ghz，双核。但不是双核4线程</li>
+<li>原因就在此了，如果核心数多些效率提升将会更明显</li>
+<li>多核测试时，由于是并行计算，所以输出的水仙花数</li>
+<li>不是按大小顺序，总耗时应按所有线程中的最大耗时</li>
+<li>以上测试结果是关闭所有其他程序时测试的，如果有</li>
+<li>其他高cpu占用的程序在运行，测试结果会不准</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

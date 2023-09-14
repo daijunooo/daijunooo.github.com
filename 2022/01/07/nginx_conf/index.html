@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>nginx配置中的细节 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2022/01/07/nginx_conf/" data-name='nginx配置中的细节' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2022/01/07/nginx_conf/">
+                Nginx配置中的细节
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2022-01-07
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/nginx/">#Nginx</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="看着挺正常，这里面有不规范的地方"><a href="#看着挺正常，这里面有不规范的地方" class="headerlink" title="看着挺正常，这里面有不规范的地方"></a>看着挺正常，这里面有不规范的地方</h1><ul>
+<li>index index.html index.htm index.php; 这一行应该放到外面，继承关系：Nginx配置文件分为好多块，常见的从外到内依次是「http」、「server」、「location」等等，缺省的继承关系是从外到内</li>
+<li>很多人喜欢用「if」指令做一系列的检查，不过这实际上是「try_files」指令的职责</li>
+<li>Nginx有两份fastcgi配置文件，分别是「fastcgi_params」和「fastcgi.conf」，它们没有太大的差异，唯一的区别是后者比前者多了一行「SCRIPT_FILENAME」的定义。原本Nginx只有「fastcgi_params」，后来发现很多人在定义「SCRIPT_FILENAME」时使用了硬编码的方式，于是为了规范用法便引入了「fastcgi.conf」。不过这样的话就产生一个疑问：为什么一定要引入一个新的配置文件，而不是修改旧的配置文件？这是因为「fastcgi_param」指令是数组型的，和普通指令相同的是：内层替换外层；和普通指令不同的是：当在同级多次使用的时候，是新增而不是替换。换句话说，如果在同级定义两次「SCRIPT_FILENAME」，那么它们都会被发送到后端，这可能会导致一些潜在的问题，为了避免此类情况，便引入了一个新的配置文件。</li>
+<li>还需要考虑一个安全问题：在PHP开启「cgi.fix_pathinfo」的情况下，PHP可能会把错误的文件类型当作PHP文件来解析。如果Nginx和PHP安装在同一台服务器上的话，那么最简单的解决方法是用「try_files」指令做一次过滤</li>
+<li>初学者往往会认为「if」指令是内核级的指令，但是实际上它是rewrite模块的一部分，加上Nginx配置实际上是声明式的，而非过程式的，所以当其和非rewrite模块的指令混用时，结果可能会非你所愿</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">server <span class="token punctuation">{</span>
+    listen <span class="token number">80</span><span class="token punctuation">;</span>
+    server_name foo<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+
+    root <span class="token operator">/</span>path<span class="token punctuation">;</span>
+
+    location <span class="token operator">/</span> <span class="token punctuation">{</span>
+
+        <span class="token shell-comment comment"># 这一行应该挪出去</span>
+        index index<span class="token punctuation">.</span>html index<span class="token punctuation">.</span>htm index<span class="token punctuation">.</span>php<span class="token punctuation">;</span>
+
+        <span class="token shell-comment comment"># 这里应该用 try_files 改写</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">-</span>e <span class="token variable">$request_filename</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            rewrite <span class="token punctuation">.</span> <span class="token operator">/</span>index<span class="token punctuation">.</span>php last<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    location <span class="token operator">~</span> \<span class="token punctuation">.</span>php$ <span class="token punctuation">{</span>
+
+        <span class="token shell-comment comment"># 这一整块参考上面说的优化</span>
+        <span class="token keyword">include</span> fastcgi_params<span class="token punctuation">;</span>
+        fastcgi_param <span class="token constant">SCRIPT_FILENAME</span> <span class="token operator">/</span>path<span class="token variable">$fastcgi_script_name</span><span class="token punctuation">;</span>
+        fastcgi_pass <span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">9000</span><span class="token punctuation">;</span>
+        fastcgi_index index<span class="token punctuation">.</span>php<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="修改后的样子"><a href="#修改后的样子" class="headerlink" title="修改后的样子"></a>修改后的样子</h1><pre class="line-numbers language-php"><code class="language-php">server <span class="token punctuation">{</span>
+    listen <span class="token number">80</span><span class="token punctuation">;</span>
+    server_name foo<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+
+    root <span class="token operator">/</span>path<span class="token punctuation">;</span>
+    index index<span class="token punctuation">.</span>html index<span class="token punctuation">.</span>htm index<span class="token punctuation">.</span>php<span class="token punctuation">;</span>
+
+    location <span class="token operator">/</span> <span class="token punctuation">{</span>
+        try_files <span class="token variable">$uri</span> <span class="token variable">$uri</span><span class="token operator">/</span> <span class="token operator">/</span>index<span class="token punctuation">.</span>php<span class="token variable">$is_args</span><span class="token variable">$args</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    location <span class="token operator">~</span> \<span class="token punctuation">.</span>php$ <span class="token punctuation">{</span>
+        try_files <span class="token variable">$uri</span> <span class="token operator">=</span><span class="token number">404</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">include</span> fastcgi<span class="token punctuation">.</span>conf<span class="token punctuation">;</span>
+        fastcgi_pass <span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">9000</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="nginx配置笔记"><a href="#nginx配置笔记" class="headerlink" title="nginx配置笔记"></a>nginx配置笔记</h1><h3 id="location"><a href="#location" class="headerlink" title="location"></a>location</h3><ul>
+<li>= 表示精确匹配。只有请求的url路径与后面的字符串完全相等时，才会命中。</li>
+<li>~ 表示该规则是使用正则定义的，区分大小写。</li>
+<li>~* 表示该规则是使用正则定义的，不区分大小写。</li>
+<li>^~ 表示如果该符号后面的字符是最佳匹配，采用该规则，不再进行后续的查找(不是一个正则表达式匹配)。<blockquote>
+<p>先精确匹配，没有则查找带有 ^~的前缀匹配，没有则进行正则匹配，最后才返回前缀匹配的结果</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="try-files"><a href="#try-files" class="headerlink" title="try_files"></a>try_files</h3><pre class="line-numbers language-php"><code class="language-php">语法：try_files file <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> uri 或 try_files file <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token operator">=</span> code
+作用域：server location
+
+说明：是按顺序检查文件是否存在，返回第一个找到的文件或文件夹<span class="token punctuation">(</span>结尾加斜线表示为文件夹<span class="token punctuation">)</span>，如果所有的文件或文件夹都找不到，会进行一个内部重定向到最后一个参数。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>检测文件$document_root/4.html和$document_root/5.html,如果存在正常显示,不存在就返回404</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">try_files <span class="token operator">/</span><span class="token number">4</span><span class="token punctuation">.</span>html <span class="token operator">/</span><span class="token number">5</span><span class="token punctuation">.</span>html <span class="token operator">=</span> <span class="token number">404</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>当用户请求 <a href="http://localhost/example" target="_blank" rel="noopener">http://localhost/example</a> 时，这里的 $uri 就是 /example。 try_files 会到硬盘里尝试找这个文件。</li>
+<li>如果存在名为 /$root/example（其中 $root 是项目代码安装目录）的文件，就直接把这个文件的内容发送给用户。</li>
+<li>目录中没有叫 example 的文件。然后就看 $uri/，增加了一个 /，也就是看有没有名为 /$root/example/ 的目录。</li>
+<li>又找不到，就会 fall back 到 try_files 的最后一个选项 /index.php，发起一个内部 “子请求”，也就是相当于 nginx 发起一个 HTTP 请求到 <a href="http://localhost/index.php。" target="_blank" rel="noopener">http://localhost/index.php。</a></li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">try_files <span class="token variable">$uri</span> <span class="token variable">$uri</span><span class="token operator">/</span> <span class="token operator">/</span>index<span class="token punctuation">.</span>php<span class="token operator">?</span><span class="token variable">$query_string</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="root"><a href="#root" class="headerlink" title="root"></a>root</h3><pre class="line-numbers language-php"><code class="language-php">location <span class="token operator">/</span>dir<span class="token operator">/</span> 
+root root_path <span class="token operator">-</span><span class="token operator">></span>  http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//host/dir/file.txt  -> root_path/dir/file.txt</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="alise"><a href="#alise" class="headerlink" title="alise"></a>alise</h3><pre class="line-numbers language-php"><code class="language-php">location <span class="token operator">/</span>dir
+alias alias_path <span class="token operator">-</span><span class="token operator">></span>  http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//host/dir/file.txt  -> alias_path/file.txt</span>
+
+location <span class="token operator">/</span>dir<span class="token operator">/</span> 
+alias alias_path<span class="token operator">/</span> <span class="token operator">-</span><span class="token operator">></span>  http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//host/dir/file.txt  -> alias_path/file.txt</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>通常最佳实际是配置一个项目的根root，其他的文件夹则使用alias，毕竟alias更加灵活。</p>
+</blockquote>
+<h3 id="location规则案例"><a href="#location规则案例" class="headerlink" title="location规则案例"></a>location规则案例</h3><h4 id="「-」-修饰符：要求路径完全匹配"><a href="#「-」-修饰符：要求路径完全匹配" class="headerlink" title="「=」 修饰符：要求路径完全匹配"></a>「=」 修饰符：要求路径完全匹配</h4><pre class="line-numbers language-php"><code class="language-php">server <span class="token punctuation">{</span>
+    server_name website<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+    location <span class="token operator">=</span> <span class="token operator">/</span>abcd <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>…<span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><a href="http://website.com/abcd匹配" target="_blank" rel="noopener">http://website.com/abcd匹配</a></li>
+<li><a href="http://website.com/ABCD可能会匹配" target="_blank" rel="noopener">http://website.com/ABCD可能会匹配</a> ，也可以不匹配，取决于操作系统的文件系统是否大小写敏感（case-sensitive）。ps: Mac 默认是大小写不敏感的，git 使用会有大坑。</li>
+<li><a href="http://website.com/abcd?param1&amp;param2匹配，忽略" target="_blank" rel="noopener">http://website.com/abcd?param1&amp;param2匹配，忽略</a> querystring</li>
+<li><a href="http://website.com/abcd/不匹配，带有结尾的/" target="_blank" rel="noopener">http://website.com/abcd/不匹配，带有结尾的/</a></li>
+<li><a href="http://website.com/abcde不匹配" target="_blank" rel="noopener">http://website.com/abcde不匹配</a></li>
+</ul>
+<h4 id="「-」修饰符：区分大小写的正则匹配"><a href="#「-」修饰符：区分大小写的正则匹配" class="headerlink" title="「~」修饰符：区分大小写的正则匹配"></a>「~」修饰符：区分大小写的正则匹配</h4><pre class="line-numbers language-php"><code class="language-php">server <span class="token punctuation">{</span>
+    server_name website<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+    location <span class="token operator">~</span> <span class="token operator">^</span><span class="token operator">/</span>abcd$ <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>…<span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>^/abcd$这个正则表达式表示字符串必须以/开始，以$结束，中间必须是abcd</p>
+</blockquote>
+<ul>
+<li><a href="http://website.com/abcd匹配（完全匹配）" target="_blank" rel="noopener">http://website.com/abcd匹配（完全匹配）</a></li>
+<li><a href="http://website.com/ABCD不匹配，大小写敏感" target="_blank" rel="noopener">http://website.com/ABCD不匹配，大小写敏感</a></li>
+<li><a href="http://website.com/abcd?param1&amp;param2匹配" target="_blank" rel="noopener">http://website.com/abcd?param1&amp;param2匹配</a></li>
+<li><a href="http://website.com/abcd/不匹配，不能匹配正则表达式" target="_blank" rel="noopener">http://website.com/abcd/不匹配，不能匹配正则表达式</a></li>
+<li><a href="http://website.com/abcde不匹配，不能匹配正则表达式" target="_blank" rel="noopener">http://website.com/abcde不匹配，不能匹配正则表达式</a></li>
+</ul>
+<h4 id="「-」不区分大小写的正则匹配"><a href="#「-」不区分大小写的正则匹配" class="headerlink" title="「~*」不区分大小写的正则匹配"></a>「~*」不区分大小写的正则匹配</h4><pre class="line-numbers language-php"><code class="language-php">server <span class="token punctuation">{</span>
+    server_name website<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+    location <span class="token operator">~</span><span class="token operator">*</span> <span class="token operator">^</span><span class="token operator">/</span>abcd$ <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>…<span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><a href="http://website.com/abcd匹配" target="_blank" rel="noopener">http://website.com/abcd匹配</a> (完全匹配)</li>
+<li><a href="http://website.com/ABCD匹配" target="_blank" rel="noopener">http://website.com/ABCD匹配</a> (大小写不敏感)</li>
+<li><a href="http://website.com/abcd?param1&amp;param2匹配" target="_blank" rel="noopener">http://website.com/abcd?param1&amp;param2匹配</a></li>
+<li><a href="http://website.com/abcd/" target="_blank" rel="noopener">http://website.com/abcd/</a> 不匹配，不能匹配正则表达式</li>
+<li><a href="http://website.com/abcde" target="_blank" rel="noopener">http://website.com/abcde</a> 不匹配，不能匹配正则表达式</li>
+</ul>
+<h4 id="「-」修饰符"><a href="#「-」修饰符" class="headerlink" title="「^~」修饰符"></a>「^~」修饰符</h4><ul>
+<li>前缀匹配 如果该 location 是最佳的匹配，那么对于匹配这个 location 的字符串， 该修饰符不再进行正则表达式检测。</li>
+<li>注意，这不是一个正则表达式匹配，它的目的是优先于正则表达式的匹配</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

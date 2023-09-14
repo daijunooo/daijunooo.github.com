@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>一次烧脑的代码重构实践 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2017/03/23/recode/" data-name='一次烧脑的代码重构实践' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2017/03/23/recode/">
+                一次烧脑的代码重构实践
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/php/" data-no-instant>
+                    <img src="/images/php.svg" alt="php" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2017-03-23
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/php-代码优化/">#Php 代码优化</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="背景故事"><a href="#背景故事" class="headerlink" title="背景故事"></a>背景故事</h1><ul>
+<li>公司要开发一个爬虫，每天自动质检设备安装完成并正常运行的工单，帮助运营人员提高工作效率。<br>同事已经开发好了部分功能，后续的工作交到了我这里，为了快同事将整个逻辑基本是用面向过程的方式实现的。<br>考虑到后续的新功能需求可能还会有，我决定用 oop 方式重构代码。</li>
+</ul>
+<h3 id="原始代码（主方法）"><a href="#原始代码（主方法）" class="headerlink" title="原始代码（主方法）"></a>原始代码（主方法）</h3><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getWorkOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">set_time_limit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$cookie_file</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">loginGsp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$phpsessid</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getCodeData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$orgarr</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">118008</span><span class="token punctuation">,</span> <span class="token number">118009</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//企业客户销售，智能管车销售,118008, 118009</span>
+    <span class="token variable">$impltype</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//安装，拆机，移机，换机，检修</span>
+    <span class="token variable">$impltitle</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string">'安装'</span><span class="token punctuation">,</span> <span class="token string">'拆机'</span><span class="token punctuation">,</span> <span class="token string">'移机'</span><span class="token punctuation">,</span> <span class="token string">'换机'</span><span class="token punctuation">,</span> <span class="token string">'检修'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$qualitystatus</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//质检结果，未质检0，质检延期3</span>
+    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'back_status'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//回单证明，有</span>
+    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'s_time'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'limit'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//每页个数</span>
+    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'workorder_status'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//工单状态，审核通过</span>
+    <span class="token variable">$qualitypass</span> <span class="token operator">=</span> <span class="token variable">$qualinotpass</span> <span class="token operator">=</span> <span class="token variable">$notcare</span> <span class="token operator">=</span> <span class="token variable">$notdeal</span> <span class="token operator">=</span> <span class="token variable">$implenum</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token variable">$jobnos</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$orgarr</span> <span class="token keyword">as</span> <span class="token variable">$k1</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$org</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$impltype</span> <span class="token keyword">as</span> <span class="token variable">$k2</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$itype</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$qualitystatus</span> <span class="token keyword">as</span> <span class="token variable">$k3</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$qstatus</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token variable">$sum</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                <span class="token keyword">do</span> <span class="token punctuation">{</span>
+                    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'customerOrg'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$org</span><span class="token punctuation">;</span>
+                    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'implement_type'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$itype</span><span class="token punctuation">;</span>
+                    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'quality_test_status'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$qstatus</span><span class="token punctuation">;</span>
+                    <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'start'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$sum</span><span class="token punctuation">;</span>
+                    <span class="token variable">$result</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$params</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'workorder_search'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询实施工单</span>
+                    <span class="token variable">$m</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$result</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$m</span> <span class="token operator">&lt;=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token variable">$m</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                        <span class="token variable">$result</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$params</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'workorder_search'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询实施工单，第一次查不到，重新执行</span>
+                    <span class="token punctuation">}</span>
+
+                    <span class="token variable">$result</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$result</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token variable">$result</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$result</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$result</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span> <span class="token keyword">as</span> <span class="token variable">$key</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$val</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            <span class="token comment" spellcheck="true">//判断工程师上门时间，需要是3天凌晨0点之前才做处理</span>
+                            <span class="token variable">$cptime</span> <span class="token operator">=</span> <span class="token function">strtotime</span><span class="token punctuation">(</span><span class="token function">date</span><span class="token punctuation">(</span><span class="token string">'Y-m-d 00:00:00'</span><span class="token punctuation">,</span> <span class="token function">strtotime</span><span class="token punctuation">(</span><span class="token string">'-3 days'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            <span class="token comment" spellcheck="true">// 先不处理年审的工单</span>
+                            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">home_to_time</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">strtotime</span><span class="token punctuation">(</span><span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">home_to_time</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token variable">$cptime</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                <span class="token variable">$param</span><span class="token punctuation">[</span><span class="token string">'jobNo'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">;</span>
+                                <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$param</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'getImplementInfo'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//查看工单详情</span>
+                                <span class="token variable">$n</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                                <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$res</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$n</span> <span class="token operator">&lt;=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                    <span class="token variable">$n</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                    <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$param</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'getImplementInfo'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//查看工单详情，第一次查不到，重新执行</span>
+                                <span class="token punctuation">}</span>
+                                <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$res</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$res</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$res</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                    <span class="token variable">$detail</span> <span class="token operator">=</span> <span class="token variable">$res</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">;</span>
+                                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$itype</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                        <span class="token comment" spellcheck="true">// 拆机情况，质检通过</span>
+                                        <span class="token variable">$jobnos</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">;</span>
+                                        <span class="token variable">$qualitypass</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'质检通过'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'质检通过'</span><span class="token punctuation">,</span> <span class="token string">'QualityPassed'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$itype</span> <span class="token operator">==</span> <span class="token number">1</span> <span class="token operator">||</span> <span class="token variable">$itype</span> <span class="token operator">==</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                            <span class="token comment" spellcheck="true">// 安装换机用新设备</span>
+                                            <span class="token variable">$gspparams</span><span class="token punctuation">[</span><span class="token string">'ids'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">gpsno_new</span><span class="token punctuation">;</span>
+                                        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$itype</span> <span class="token operator">==</span> <span class="token number">3</span> <span class="token operator">||</span> <span class="token variable">$itype</span> <span class="token operator">==</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                            <span class="token comment" spellcheck="true">// 检修移机用老设备</span>
+                                            <span class="token variable">$gspparams</span><span class="token punctuation">[</span><span class="token string">'ids'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">gpsno</span><span class="token punctuation">;</span>
+                                        <span class="token punctuation">}</span>
+                                        <span class="token variable">$gspparams</span><span class="token punctuation">[</span><span class="token string">'limit'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+                                        <span class="token variable">$gspparams</span><span class="token punctuation">[</span><span class="token string">'start'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                                        <span class="token variable">$gspparams</span><span class="token punctuation">[</span><span class="token string">'service_gsp'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                                        <span class="token variable">$gpsres</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$gspparams</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'gps_search'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询设备IMEI号</span>
+                                        <span class="token variable">$h</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                                        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$gpsres</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$h</span> <span class="token operator">&lt;=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                            <span class="token variable">$h</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$gpsres</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$gspparams</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'gps_search'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询设备IMEI号，第一次查不到，重新执行</span>
+                                        <span class="token punctuation">}</span>
+                                        <span class="token variable">$gpsres</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$gpsres</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                                        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$gpsres</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token variable">$gpsres</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                            <span class="token variable">$curparam</span><span class="token punctuation">[</span><span class="token string">'gpsid'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$gpsres</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">gpsid</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$curparam</span><span class="token punctuation">[</span><span class="token string">'gpsno'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$gspparams</span><span class="token punctuation">[</span><span class="token string">'ids'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$curparam</span><span class="token punctuation">[</span><span class="token string">'intstat'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$curparam</span><span class="token punctuation">[</span><span class="token string">'from'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">date</span><span class="token punctuation">(</span><span class="token string">'Y-m-d 00:00:00'</span><span class="token punctuation">,</span> <span class="token function">strtotime</span><span class="token punctuation">(</span><span class="token string">'-2 days'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$curparam</span><span class="token punctuation">[</span><span class="token string">'to'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">date</span><span class="token punctuation">(</span><span class="token string">'Y-m-d H:i:s'</span><span class="token punctuation">,</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$curres</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$curparam</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'gpsRecent'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询定位历史</span>
+                                            <span class="token variable">$curres</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$curres</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$curres</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                <span class="token variable">$sumdistance</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                                                <span class="token variable">$countdistance</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                                                <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$curres</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$curres</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">distance</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">500000</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$countdistance</span> <span class="token operator">+</span><span class="token operator">=</span> <span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$curres</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">distance</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token punctuation">}</span>
+                                                    <span class="token variable">$sumdistance</span> <span class="token operator">+</span><span class="token operator">=</span> <span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$curres</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">distance</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                <span class="token punctuation">}</span>
+                                                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$sumdistance</span> <span class="token operator">>=</span> <span class="token number">1000000</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$countdistance</span> <span class="token operator">/</span> <span class="token variable">$sumdistance</span> <span class="token operator">&lt;</span> <span class="token number">0.05</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                    <span class="token variable">$implres</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">implementDetail</span><span class="token punctuation">(</span><span class="token variable">$detail</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//是否安装EMS，冷链，油感</span>
+                                                    <span class="token variable">$contain</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">containStr</span><span class="token punctuation">(</span><span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">serv_remark</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//判断是否包含关键字</span>
+                                                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$implres</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$contain</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$jobnos</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">;</span>
+                                                        <span class="token variable">$qualitypass</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'质检通过'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'质检通过，在线'</span><span class="token punctuation">,</span> <span class="token string">'QualityPassed'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$implres</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$contain</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$check</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">gpsno_new</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'check'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                        <span class="token variable">$check</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$check</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$check</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">message</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                            <span class="token variable">$jobnos</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">;</span>
+                                                            <span class="token variable">$qualitypass</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                            <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'质检通过'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'质检通过，在线'</span><span class="token punctuation">,</span> <span class="token string">'QualityPassed'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                                            <span class="token variable">$notdeal</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                            <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token variable">$check</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">abnormal_type</span><span class="token punctuation">,</span> <span class="token string">'NotDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                        <span class="token punctuation">}</span>
+                                                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$implenum</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                    <span class="token punctuation">}</span>
+                                                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$sumdistance</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                    <span class="token variable">$curparam</span><span class="token punctuation">[</span><span class="token string">'from'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">date</span><span class="token punctuation">(</span><span class="token string">'Y-m-d 00:00:00'</span><span class="token punctuation">,</span> <span class="token function">strtotime</span><span class="token punctuation">(</span><span class="token string">'-10 days'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token variable">$curres0</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$curparam</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'gpsRecent'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询定位历史</span>
+                                                    <span class="token variable">$curres0</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$curres0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token variable">$sumdistance0</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                                                    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$curres0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$sumdistance0</span> <span class="token operator">+</span><span class="token operator">=</span> <span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$curres0</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">distance</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token punctuation">}</span>
+                                                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$sumdistance0</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$notdeal</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'设备已静止10天以上'</span><span class="token punctuation">,</span> <span class="token string">'NotDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                                        <span class="token variable">$notcare</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'暂不需处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'设备一直静止，总距离为0'</span><span class="token punctuation">,</span> <span class="token string">'NoNeedToDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                    <span class="token punctuation">}</span>
+                                                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$sumdistance</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$sumdistance</span> <span class="token operator">&lt;</span> <span class="token number">1000000</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$countdistance</span> <span class="token operator">/</span> <span class="token variable">$sumdistance</span> <span class="token operator">&lt;</span> <span class="token number">0.05</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                                    <span class="token variable">$notcare</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'暂不需处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'设备，两天内行驶距离小于10公里'</span><span class="token punctuation">,</span> <span class="token string">'NoNeedToDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                                    <span class="token variable">$qualinotpass</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'质检未通过'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'质检未通过，定位异常，异常距离'</span> <span class="token punctuation">.</span> <span class="token punctuation">(</span><span class="token variable">$countdistance</span> <span class="token operator">/</span> <span class="token number">100000</span><span class="token punctuation">)</span> <span class="token punctuation">.</span> <span class="token string">'，总距离'</span> <span class="token punctuation">.</span> <span class="token punctuation">(</span><span class="token variable">$sumdistance</span> <span class="token operator">/</span> <span class="token number">100000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'QualityNotPass'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                                <span class="token punctuation">}</span>
+                                            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                                <span class="token variable">$notdeal</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                                <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'设备无定位历史或已离线超过2天'</span><span class="token punctuation">,</span> <span class="token string">'NotDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                            <span class="token punctuation">}</span>
+                                        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                            <span class="token variable">$notdeal</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                            <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'查不到设备IMEI信息'</span><span class="token punctuation">,</span> <span class="token string">'NotDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                        <span class="token punctuation">}</span>
+                                    <span class="token punctuation">}</span>
+                                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                                    <span class="token variable">$notdeal</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                                    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未处理'</span><span class="token punctuation">,</span> <span class="token variable">$val</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">job_no</span><span class="token punctuation">,</span> <span class="token variable">$impltitle</span><span class="token punctuation">[</span><span class="token variable">$itype</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token string">'无工单详情'</span><span class="token punctuation">,</span> <span class="token string">'NotDeal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                <span class="token punctuation">}</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                    <span class="token variable">$sum</span> <span class="token operator">+</span><span class="token operator">=</span> <span class="token variable">$params</span><span class="token punctuation">[</span><span class="token string">'limit'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token variable">$result</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$sum</span> <span class="token markup">&lt; $result-></span>total<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$jobnos</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//统一设置质检通过</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$jobnos</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$jobnos</span> <span class="token keyword">as</span> <span class="token variable">$key</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$val</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$uparam</span><span class="token punctuation">[</span><span class="token string">'quality_test_status'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 1为质检通过，2为不通过</span>
+            <span class="token variable">$uparam</span><span class="token punctuation">[</span><span class="token string">'nos'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$val</span><span class="token punctuation">;</span>
+            <span class="token variable">$ures</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$uparam</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'quality'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">unset</span><span class="token punctuation">(</span><span class="token variable">$uparam</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//发送邮件</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">sendEmail</span><span class="token punctuation">(</span><span class="token variable">$qualitypass</span><span class="token punctuation">,</span> <span class="token variable">$qualinotpass</span><span class="token punctuation">,</span> <span class="token variable">$notcare</span><span class="token punctuation">,</span> <span class="token variable">$notdeal</span><span class="token punctuation">,</span> <span class="token variable">$implenum</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="重构后的（主方法）"><a href="#重构后的（主方法）" class="headerlink" title="重构后的（主方法）"></a>重构后的（主方法）</h3><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">checkOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span> <span class="token keyword">as</span> <span class="token variable">$key</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span><span class="token variable">$value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">//实施时间距今两天以内的不处理</span>
+        <span class="token variable">$itime</span> <span class="token operator">=</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">strtotime</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'implement_time'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'implement_time'</span><span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token variable">$itime</span> <span class="token operator">&lt;</span> <span class="token number">86400</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">unset</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">data</span><span class="token punctuation">[</span><span class="token variable">$key</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//serv_type 实施类型 1安装 2拆机 3移机 4换机 5检修 (拆机直接质检通过)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'serv_type'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">check</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'job_no'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'checkresult'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'checkcommon'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'拆机'</span><span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//查询工单详情</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$param</span><span class="token punctuation">[</span><span class="token string">'jobNo'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'job_no'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">postRequest</span><span class="token punctuation">(</span><span class="token variable">$param</span><span class="token punctuation">,</span> self<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$url</span><span class="token punctuation">[</span><span class="token string">'getImplementInfo'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token function">json_decode</span><span class="token punctuation">(</span><span class="token variable">$res</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'devicedetail'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$res</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'devicedetail'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'checkresult'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string">'checkcommon'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'查不到工单详情'</span><span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//以下是主要业务逻辑，可以通过注释任意组合质检项，后续新需求也是堆积木一样开发</span>
+        <span class="token comment" spellcheck="true">//复杂问题模块化处理，避免在秃头的道路上越走越远 😂</span>
+
+        <span class="token comment" spellcheck="true">//定位</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">checkLocation</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//年审</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">checkYear</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//EMS</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">checkEms</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//冷链</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">checkCold</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//是否质检通过判断</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">check</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//写入数据库</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">save</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//质检操作</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">doCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//推送邮件</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">sendEmail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><h4 id="如何组织代码的沉思"><a href="#如何组织代码的沉思" class="headerlink" title="如何组织代码的沉思"></a>如何组织代码的沉思</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">//常规写法（伪代码）</span>
+<span class="token keyword">function</span> <span class="token function">see</span><span class="token punctuation">(</span>$人<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>这个人有眼<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>这个人眼没瞎<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>这个人眼是睁开的<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token string">'这个人是能看见的 ：）'</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 稍优化一下（伪代码）
+ * 这么写已经很不错了，但是还有优化的空间
+ */</span>
+<span class="token keyword">function</span> <span class="token function">see</span><span class="token punctuation">(</span>$人<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>这个人有眼 <span class="token operator">&amp;&amp;</span> 这个人眼没瞎 <span class="token operator">&amp;&amp;</span> 这个人眼是睁开的<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">'这个人是能看见的 ：）'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 稍优化二下（伪代码）
+ * 看上去变的更复杂了，但是却解耦了判断条件，当有新的判断加入是友好的，或者对每种判断增加提示信息
+ * 也是友好的，我个人推荐减少代码逻辑复杂度，各种条件嵌套不超过2层。
+ */</span>
+<span class="token keyword">function</span> <span class="token function">see</span><span class="token punctuation">(</span>$人<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>！这个人有眼<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>！这个人眼没瞎<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>！这个人眼是睁开的<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token string">'这个人是能看见的 ：）'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 通用套路
+ * 一下是针对复杂逻辑的，一般一层嵌套是可以接受的，除非你严重强迫症
+ */</span>
+<span class="token keyword">function</span> <span class="token function">see</span><span class="token punctuation">(</span>$人<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//不推荐：无形中就增加了一层if嵌套，当条件增多时不易维护</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>条件成立<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        我要处理这件事<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//改为这样：好处是把处理逻辑放到了if外，减少了嵌套，即使条件增多也像搭积木一样</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>条件不成立<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        跳出此方法<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    在这里处理<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>好的coder会写很详细的注释，更好的coder不用写太多注释（完美抽象现实，面向对象方式实现）。</li>
+<li>好的coder代码风格鲜明，更好的coder你不知道他是谁（所有人的代码像是同一个人写出来的）。</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

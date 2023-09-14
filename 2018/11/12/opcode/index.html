@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>OPcache之一次愉快的php性能优化实践 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2018/11/12/opcode/" data-name='OPcache之一次愉快的php性能优化实践' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2018/11/12/opcode/">
+                OPcache之一次愉快的php性能优化实践
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/php/" data-no-instant>
+                    <img src="/images/php.svg" alt="php" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2018-11-12
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/php/">#Php</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="项目优化的时机"><a href="#项目优化的时机" class="headerlink" title="项目优化的时机"></a>项目优化的时机</h1><ul>
+<li>公司的项目日趋稳定了，新需求也越来越少，这时候有大把时间研究新东西和优化项目。前期为了赶进度写了一些流水账式的代码，现在都可以花时间重构了。</li>
+<li>我用了一两天时间优化了调用频繁的api，当大部分优化都做的差不多的时候，接口效率确实大有提升。开始考虑怎么样再继续优化。</li>
+<li>这时我接触了Golang，框架都搭好了，准备用Go语言写rpc服务，由于目前这个项目的用户量和数据量还不是很多，用Go好像看不出提升的效果，在做了一些测试后也证明了我的想法。</li>
+<li>后来想到了OPcache，就用到了项目中，接口效率又提升了不少。接口响应时间降到了100ms以下,相比之前提升了30%左右。在并发的情况下大部分接口的响应时间都在200ms以下。</li>
+</ul>
+<h1 id="小故事"><a href="#小故事" class="headerlink" title="小故事"></a>小故事</h1><blockquote>
+<p>小明想和一个老外吹牛，他必须先找一个翻译，因为小明只念过小学。于是乎他找到了大黑给他做翻译，这样他高兴的把一个个牛都吹上了天。虽然沟通起来慢了一点，但是好歹不用学英文了。突然有一天小明捡到一个神灯，神灯说：“别给我说你有什么愿望，老子天天帮别人完成愿望，谁管过我有什么愿望！”。刚说完就跑回灯里去了。小明是一脸懵逼，他抬头看见一个老外，脱口而出“What the fuck!”,顿时他察觉到了什么，好像他不需要翻译了，神灯给他开了挂。一口流利的英语……,从此吹一只牛加上翻译的时间需要1分钟，缩短到不用翻译10秒搞定。提高了吹牛逼的效率。</p>
+</blockquote>
+<ul>
+<li>带着以上小故事就可以理解下面的原理了。</li>
+<li>OPcache:  通过将 PHP 脚本预编译的字节码存储到共享内存中来提升 PHP 的性能， 存储预编译字节码的好处就是 省去了每次加载和解析 PHP 脚本的开销。</li>
+<li>这个小故事不是很恰当，但是可以帮我们理解原理，小明就是我们写的php代码，神灯给他开的挂叫OPcache，而听他吹牛逼的老外是服务器主机。</li>
+</ul>
+<h1 id="开启步骤"><a href="#开启步骤" class="headerlink" title="开启步骤"></a>开启步骤</h1><blockquote>
+<p>PHP5.5.0以后版本自带Opcache加速器，但默认情况下木有启用。所以编译的使用我们想要启用该PHP加速器就应该添加参数 ： –enable-opcache 来制定。</p>
+</blockquote>
+<ul>
+<li>查找php自带包的位置，使用下面的命令</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token punctuation">[</span>root<span class="token punctuation">]</span><span class="token shell-comment comment"># find / -name opcache</span>
+<span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>php<span class="token number">-5.6</span><span class="token operator">/</span>extcode<span class="token operator">/</span>opcache
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>查找phpize的位置</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token punctuation">[</span>root<span class="token punctuation">]</span><span class="token shell-comment comment"># find / -name phpize</span>
+<span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>php<span class="token number">-5.6</span><span class="token operator">/</span>bin<span class="token operator">/</span>phpize
+<span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>php<span class="token operator">-</span>generic<span class="token number">-5.3</span><span class="token operator">/</span>bin<span class="token operator">/</span>phpize
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>切换到opcache包的目录</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token punctuation">[</span>root<span class="token punctuation">]</span><span class="token shell-comment comment"># cd /usr/local/php-5.6/extcode/opcache</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>然后在包的目录，执行phpize</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token punctuation">[</span>root opcache<span class="token punctuation">]</span><span class="token shell-comment comment"># /usr/local/php-5.6/bin/phpize</span>
+Configuring <span class="token keyword">for</span><span class="token punctuation">:</span>
+<span class="token constant">PHP</span> Api Version<span class="token punctuation">:</span>         <span class="token number">20090626</span>
+Zend Module Api No<span class="token punctuation">:</span>      <span class="token number">20090626</span>
+Zend Extension Api No<span class="token punctuation">:</span>   <span class="token number">220090626</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>不要切换目录，继续在当前目录下执行下面的configure</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token punctuation">.</span><span class="token operator">/</span>configure <span class="token operator">--</span>with<span class="token operator">-</span>php<span class="token operator">-</span>config<span class="token operator">=</span><span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>php<span class="token number">-5.6</span><span class="token operator">/</span>bin<span class="token operator">/</span>php<span class="token operator">-</span>config
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>还是在这个目录，继续编译文件</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">make <span class="token operator">&amp;&amp;</span> make install
+
+
+Build complete<span class="token punctuation">.</span>
+Don<span class="token string">'t forget to run '</span>make test'<span class="token punctuation">.</span>
+
+Installing shared extensions<span class="token punctuation">:</span>     <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>php<span class="token number">-5.6</span><span class="token operator">/</span>lib<span class="token operator">/</span>php<span class="token operator">/</span>extensions<span class="token operator">/</span>no<span class="token operator">-</span>debug<span class="token operator">-</span>non<span class="token operator">-</span>zts<span class="token number">-20131226</span><span class="token operator">/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>最后它会告诉你opcache.so已经编译成功，就放在/usr/local/php-5.6/lib/php/extensions/no-debug-non-zts-20131226/这个目录里。</li>
+<li>用vi打开php.ini，编写opcache的配置参数。如果你不知道你的php.ini在哪里，可以用phpinfo.php来查看</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">vi <span class="token operator">/</span>home<span class="token operator">/</span>wwwroot<span class="token operator">/</span>etc<span class="token operator">/</span>php<span class="token punctuation">.</span>ini
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>将下面的代码放置在php.ini的最后面，保存后退出</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token punctuation">[</span>opcache<span class="token punctuation">]</span>
+zend_extension<span class="token operator">=</span><span class="token string">"/usr/local/php/lib/php/extensions/no-debug-non-zts-20131226/opcache.so"</span>
+opcache<span class="token punctuation">.</span>enable<span class="token operator">=</span><span class="token number">1</span>
+opcache<span class="token punctuation">.</span>revalidate_freq<span class="token operator">=</span><span class="token number">0</span>
+opcache<span class="token punctuation">.</span>validate_timestamps<span class="token operator">=</span><span class="token number">0</span>
+opcache<span class="token punctuation">.</span>max_accelerated_files<span class="token operator">=</span><span class="token number">7963</span>
+opcache<span class="token punctuation">.</span>memory_consumption<span class="token operator">=</span><span class="token number">192</span>
+opcache<span class="token punctuation">.</span>interned_strings_buffer<span class="token operator">=</span><span class="token number">16</span>
+opcache<span class="token punctuation">.</span>fast_shutdown<span class="token operator">=</span><span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>重启apache</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php">service httpd restart
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>成功重启后通过查看phpinfo()可以看到OPcache相关信息。</li>
+<li>此时可以借助调试工具查看接口响应时间，是不是比之前有一定提升呢！</li>
+<li>在测试中，我的接口效率有明显提升，小程序端明显流畅了很多。</li>
+</ul>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ul>
+<li>开启OPcache后，服务器上的代码更新后不是即刻生效的，这对于我们版本迭代是不方便的。</li>
+<li>为了解决上面的不方便我找到了一个好的解决方案，写一个专门的接口，调用一次 opcache_reset(),这样OPcache就会被重置，新代码就会生效。</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">refreshCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token function">opcache_reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'result'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$res</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000005844450" target="_blank" rel="noopener">OPcache的相关配置这篇文章说的很好很详细</a></li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

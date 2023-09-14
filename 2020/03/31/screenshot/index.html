@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>自己第一个开源项目 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2020/03/31/screenshot/" data-name='自己第一个开源项目' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2020/03/31/screenshot/">
+                自己第一个开源项目
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2020-03-31
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/phantomJs/">#Phantomjs</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="screenshot"><a href="#screenshot" class="headerlink" title="screenshot"></a>screenshot</h1><p>网页截图服务，用于生成小程序海报。(mac系统暂未适配)</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre class="line-numbers language-php"><code class="language-php">composer <span class="token keyword">require</span> tommy<span class="token operator">-</span>dai<span class="token operator">/</span>screenshot
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h4 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token variable">$screenshot</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>ScreenShot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$screenshot</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">shot</span><span class="token punctuation">(</span>'http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//image.baidu.com');</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注意：第一次访问图片有可能不出来，后面就不会出现了</p>
+</blockquote>
+<h5 id="不出意外就可以获得百度图片的网页截图"><a href="#不出意外就可以获得百度图片的网页截图" class="headerlink" title="不出意外就可以获得百度图片的网页截图"></a>不出意外就可以获得百度图片的网页截图</h5><p><img src="https://s1.ax1x.com/2020/04/02/GYtJWn.png" alt></p>
+<h4 id="可选配置项"><a href="#可选配置项" class="headerlink" title="可选配置项"></a>可选配置项</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">//截图服务端口号</span>
+port <span class="token operator">=</span> <span class="token number">8181</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//超时时间（毫秒）</span>
+timeOut <span class="token operator">=</span> <span class="token number">5000</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//是否解析页面中的JavaScript代码</span>
+javascriptEnabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//图片宽度（单位像素）</span>
+width <span class="token operator">=</span> <span class="token number">750</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//图片高度（单位像素）</span>
+height <span class="token operator">=</span> <span class="token number">1334</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//截图日志文件存放路径（绝对路径）</span>
+logPath <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="修改默认配置项"><a href="#修改默认配置项" class="headerlink" title="修改默认配置项"></a>修改默认配置项</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">//获取默认配置</span>
+<span class="token variable">$config</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//修改默认端口号（修改配置）</span>
+<span class="token variable">$config</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">setPort</span><span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//修改默认端图片宽度</span>
+<span class="token variable">$config</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">setWidth</span><span class="token punctuation">(</span><span class="token number">600</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//修改默认端图片高度</span>
+<span class="token variable">$config</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">setHeight</span><span class="token punctuation">(</span><span class="token number">800</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//开启JavaScript支持（开启后将可以解析页面中js代码，对于js生成的页面可以截取）</span>
+<span class="token variable">$config</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">setJavascriptEnabled</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//用配置文件初始化截图服务（不传$config会走默认配置）</span>
+<span class="token variable">$screenshot</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>ScreenShot</span><span class="token punctuation">(</span><span class="token variable">$config</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//生成截图服务并截取百度图片</span>
+<span class="token variable">$screenshot</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">shot</span><span class="token punctuation">(</span>'http<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//image.baidu.com');</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注意：修改配置项不会立即生效，关闭服务重新开启后生效。</p>
+</blockquote>
+<h4 id="关闭步骤"><a href="#关闭步骤" class="headerlink" title="关闭步骤"></a>关闭步骤</h4><ul>
+<li>改为下面代码然后通过浏览器访问一次，服务就会关闭。重新访问上面的代码就生效了。</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token variable">$screenshot</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>ScreenShot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//关闭截图服务</span>
+<span class="token variable">$screenshot</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="特殊用法"><a href="#特殊用法" class="headerlink" title="特殊用法"></a>特殊用法</h4><pre class="line-numbers language-php"><code class="language-php"><span class="token variable">$screenshot</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>Screenshot<span class="token punctuation">\</span>ScreenShot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//开启截图服务</span>
+<span class="token variable">$screenshot</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="开启截图服务-screenshot-gt-start-之后能干什么"><a href="#开启截图服务-screenshot-gt-start-之后能干什么" class="headerlink" title="开启截图服务 $screenshot-&gt;start() 之后能干什么"></a>开启截图服务 $screenshot-&gt;start() 之后能干什么</h4><ol>
+<li>可以通过访问 <a href="http://127.0.0.1:8181/?a=http://image.baidu.com" target="_blank" rel="noopener">http://127.0.0.1:8181/?a=http://image.baidu.com</a> 获取截图的 base64 字符串</li>
+<li>可以把截图服务单独部署，通过访问 <a href="http://ip地址:8181/?a=http://image.baidu.com" target="_blank" rel="noopener">http://ip地址:8181/?a=http://image.baidu.com</a> 获取截图的 base64 字符串</li>
+<li>可以部署多台截图服务用nginx做负载均衡</li>
+</ol>
+<h4 id="更多疑问请提-issues"><a href="#更多疑问请提-issues" class="headerlink" title="更多疑问请提 issues"></a>更多疑问请提 issues</h4>
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>从零开始学Python爬虫之scrapy - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2018/04/09/scrapy/" data-name='从零开始学Python爬虫之scrapy' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2018/04/09/scrapy/">
+                从零开始学Python爬虫之scrapy
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2018-04-09
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/Python-爬虫-scrapy/">#Python 爬虫 scrapy</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="从-scrapy-到-scrapy-splash-转到-scrapy-redis-一路踩坑填坑之旅"><a href="#从-scrapy-到-scrapy-splash-转到-scrapy-redis-一路踩坑填坑之旅" class="headerlink" title="从 scrapy 到 scrapy-splash 转到 scrapy-redis 一路踩坑填坑之旅"></a>从 scrapy 到 scrapy-splash 转到 scrapy-redis 一路踩坑填坑之旅</h1><ul>
+<li>新公司刚转正就把我调到新的部门去了，从此便自立门户。新部门就我和我老大😂</li>
+<li>老大是产品，我是开发等于就我一个人写代码…😳，折腾吧码农……</li>
+<li>第一个需求就是爬取指定微信公众号发布的所有文章，幸好我之前也写过爬虫程序，可爬公众号并没有想像中那么简单，微信的反爬虫做的很好，哪怕是用户正常的操作，频率高了都会出验证码。</li>
+<li>所谓工欲善其事……，转战Python，爬虫有相当丰富的类库支持。方案成熟和丰富的类库支持是我选择Python的主要原因，Python我不会😂，踏入Get新技能的副本中不能自拔…</li>
+</ul>
+<blockquote>
+<p>回想起以前2周学会Java开发项目，对于现在的Python我根本没放在心上。本文旨在叙述解决问题的思路和方法。不详细贴出具体代码实现</p>
+</blockquote>
+<pre class="line-numbers language-php"><code class="language-php">新手快速上手建议
+
+<span class="token number">1</span><span class="token punctuation">.</span>安装PyCharm编辑器
+<span class="token number">2</span><span class="token punctuation">.</span>安装PyCharm编辑器
+<span class="token number">3</span><span class="token punctuation">.</span>安装PyCharm编辑器
+
+没错，借助这个编辑器你就可以骚起来了<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="scrapy-小试牛刀"><a href="#scrapy-小试牛刀" class="headerlink" title="scrapy 小试牛刀"></a>scrapy 小试牛刀</h3><ul>
+<li>Python开发环境安装，PyCharm下scrapy安装略过</li>
+<li>以下命令都在PyCharm命令行下敲</li>
+</ul>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">//创建一个scrapy项目</span>
+scrapy startproject demo
+<span class="token comment" spellcheck="true">//上条命令成功执行后会创建相关文件并提示新的命令创建爬虫程序</span>
+<span class="token comment" spellcheck="true">//目录大致如下</span>
+└── demo
+  ├── demo
+  │   ├── __init__<span class="token punctuation">.</span>py
+  │   ├── items<span class="token punctuation">.</span>py
+  │   ├── middlewares<span class="token punctuation">.</span>py
+  │   ├── pipelines<span class="token punctuation">.</span>py
+  │   ├── settings<span class="token punctuation">.</span>py
+  │   └── spiders
+  │       └── __init__<span class="token punctuation">.</span>py
+  └── scrapy<span class="token punctuation">.</span>cfg
+
+
+输入新的命令一个简单爬虫就完成了，目前为止还一行代码没写就得到了一个爬虫。
+cd 到 demo／demo／spiders 目录下
+scrapy crawl 爬虫名 <span class="token comment" spellcheck="true">//就执行了此爬虫</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>此爬虫适合作为计划任务去跑，我们需求是需要和前端交互，所以我放弃了这种方式，加入了scrapyd。可以通过发请求启动爬虫，并且可以传参。虽然爬虫启停是可控的了，但仍旧不太满意，scrapyd只返回爬虫启停信息并不直接返回爬虫爬取到的内容信息。另外爬取数据的过程中我发现图片信息丢失。所以有了下面的方案。</p>
+</blockquote>
+<h3 id="scrapy-splash"><a href="#scrapy-splash" class="headerlink" title="scrapy + splash"></a>scrapy + splash</h3><ul>
+<li>我要爬取的数据来源是<a href="http://weixin.sogou.com/" target="_blank" rel="noopener">微信搜狗</a>,它可以搜索到微信公众号文章。</li>
+<li>splash是个轻量级浏览器内核，我用它模拟浏览器行为，比如爬取公众号文章时，必须下拉浏览器滚动条图片才显示，用splash我直接默认浏览器高度为整篇文章的高度，这样即使不下拉所有的图片也会显示出来。</li>
+<li>不好的地方是splash必须设置等待时间0.5秒，这样对爬取速度大打折扣。另外scrapy爬取到文章交给splash解析本身也增加了硬件资源消耗，增加了爬取的复杂度。</li>
+</ul>
+<blockquote>
+<p>考虑到 scrapy + splash 不适合大规模的数据爬取，最后将架构改为 scrapy + redis 分布式爬虫，也就是即将出场的下一个方案</p>
+</blockquote>
+<h3 id="scrapy-redis"><a href="#scrapy-redis" class="headerlink" title="scrapy + redis"></a>scrapy + redis</h3><ul>
+<li>以上方案我大概折腾了一周多，最后都被我自己给否定掉了。</li>
+<li>大规模的数据爬取我首要考虑的是稳定性、可扩展性、容灾性等等。</li>
+<li>scrapy + redis 正好是较为合适的成熟方案，它可以是分布式的，所以可以在不同服务器上启动进程分布式爬取。这正好符合我的所有需求。</li>
+<li>我将爬虫分为两个，一个master用于爬取文章列表的url，另一个slave用于爬取master提供的url，将文章详情解析入库。</li>
+<li>master爬虫用到了搜索，所以必须加入代理中间件通过ip代理去发请求，我用的是abuyun代理，虽然大部分可以代理爬取成功，但是依然有少部分的代理ip被搜狗微信屏蔽掉了，所以这部分丢失的我必须重新换代理ip重新爬取，目前还没解决。</li>
+<li>slave爬虫倒是很健壮稳定，由于没有用到搜索，所以它不用加代理，轻轻松松的就爬到master提供的url里的文章详情。</li>
+<li>两个爬虫相互独立，slave几乎定下来了，一直很稳定。master只要解决了丢失问题应该问题也不大。</li>
+</ul>
+<blockquote>
+<p>现在前端只要往redis里写入要爬取的公众号，master爬虫就会爬取所有文章的url，然后push到redis，slave接过master的工作继续爬取每个url下的文章，整个架构和流程简洁清晰。整个方案演变的过程中其实有大量的细节，在和搜狗微信对抗的过程中也有很多技术细节就不展开了，整个过程中我其实也是边找资料边研究。多baidu &amp; google &amp; 代码实践，相信没有什么问题搞不定的。</p>
+</blockquote>
+<h3 id="我认为很有帮助的参考资料"><a href="#我认为很有帮助的参考资料" class="headerlink" title="我认为很有帮助的参考资料"></a>我认为很有帮助的参考资料</h3><ul>
+<li>scrapy <a href="http://scrapy-chs.readthedocs.io/zh_CN/latest/" target="_blank" rel="noopener">中文文档</a></li>
+<li><a href="https://www.jianshu.com/p/cd4054bbc757" target="_blank" rel="noopener">简书</a></li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2023</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
