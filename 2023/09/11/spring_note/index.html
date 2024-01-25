@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>spring开发笔记 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2023/09/11/spring_note/" data-name='spring开发笔记' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2023/09/11/spring_note/">
+                Spring开发笔记
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2023-09-11
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/spring/">#Spring</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <h1 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h1><h3 id="没有入口文件的单元测试"><a href="#没有入口文件的单元测试" class="headerlink" title="没有入口文件的单元测试"></a>没有入口文件的单元测试</h3><pre class="line-numbers language-php"><code class="language-php">@<span class="token function">RunWith</span><span class="token punctuation">(</span>SpringRunner<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+@<span class="token function">SpringBootTest</span><span class="token punctuation">(</span>
+        classes <span class="token operator">=</span> <span class="token punctuation">{</span>SmsAutoConfigure<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> RedisAutoConfig<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> ComRedisAutoConfig<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        webEnvironment <span class="token operator">=</span> SpringBootTest<span class="token punctuation">.</span>WebEnvironment<span class="token punctuation">.</span><span class="token constant">MOCK</span><span class="token punctuation">,</span>
+        properties <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"spring.cloud.config.enabled=false"</span><span class="token punctuation">}</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">WeiGeChannelImplTest</span> <span class="token punctuation">{</span>
+
+    @Autowired
+    <span class="token keyword">private</span> SmsService smsService<span class="token punctuation">;</span>
+
+    @Test
+    void <span class="token function">testWeiGeSms</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        smsService<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>ChannelEnum<span class="token punctuation">.</span><span class="token constant">WEIGE</span><span class="token punctuation">,</span> <span class="token string">"15955149139"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="stream-排序，允许null值"><a href="#stream-排序，允许null值" class="headerlink" title="stream 排序，允许null值"></a>stream 排序，允许null值</h3><pre class="line-numbers language-php"><code class="language-php">List<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>PointsMallGoods</span><span class="token punctuation">></span></span></span> skus <span class="token operator">=</span> pointsList<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">sorted</span><span class="token punctuation">(</span>Comparator<span class="token punctuation">.</span><span class="token function">comparing</span><span class="token punctuation">(</span>PointsMallGoods<span class="token punctuation">:</span><span class="token punctuation">:</span>getPoints<span class="token punctuation">,</span>Comparator<span class="token punctuation">.</span><span class="token function">nullsLast</span><span class="token punctuation">(</span>Long<span class="token punctuation">:</span><span class="token punctuation">:</span>compareTo<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="webflux-框架"><a href="#webflux-框架" class="headerlink" title="webflux 框架"></a>webflux 框架</h3><pre class="line-numbers language-php"><code class="language-php"><span class="token keyword">public</span> Flux<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SeckillGoods</span><span class="token punctuation">></span></span></span> <span class="token function">bindOrChangeGoods</span><span class="token punctuation">(</span>BindGoodsForm form<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">//这个订阅是spring 框架帮你在return response里面做的</span>
+    <span class="token comment" spellcheck="true">//隐式订阅需要满足条件，没有触发隐式订阅就需要显示调用 subscribe()</span>
+    <span class="token function">saveSeckillTime</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getActId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> form<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> Flux<span class="token punctuation">.</span><span class="token function">fromIterable</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getGoodsList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>goodsBean <span class="token operator">-</span><span class="token operator">></span> <span class="token function">saveSeckillGoods</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getActId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> goodsBean<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">public</span> Mono<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SeckillGoodsTimeModel</span><span class="token punctuation">></span></span></span> <span class="token function">findAllByAct</span><span class="token punctuation">(</span>String actId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    SeckillGoodsTimeModel model <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SeckillGoodsTimeModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token function">getSortTime</span><span class="token punctuation">(</span>actId<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">switchIfEmpty</span><span class="token punctuation">(</span>Mono<span class="token punctuation">.</span><span class="token function">fromCallable</span><span class="token punctuation">(</span>SeckillTime<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token keyword">new</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>seckillTime <span class="token operator">-</span><span class="token operator">></span> seckillGoodsRepository<span class="token punctuation">.</span><span class="token function">findByActId</span><span class="token punctuation">(</span>actId<span class="token punctuation">)</span>
+
+                    <span class="token comment" spellcheck="true">//把实体收集为集合</span>
+                    <span class="token punctuation">.</span><span class="token function">collectList</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+                    <span class="token comment" spellcheck="true">//null会导致后面的流中断订阅，所以需要判空 ，然后补偿一个实例对象</span>
+                    <span class="token punctuation">.</span><span class="token function">switchIfEmpty</span><span class="token punctuation">(</span>Mono<span class="token punctuation">.</span><span class="token function">fromCallable</span><span class="token punctuation">(</span>ArrayList<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token keyword">new</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>seckillGoods <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                        model<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>seckillTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        model<span class="token punctuation">.</span><span class="token function">setGoods</span><span class="token punctuation">(</span>seckillGoods<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">return</span> Mono<span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">public</span> Flux<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SeckillGoods</span><span class="token punctuation">></span></span></span> <span class="token function">bindOrChangeGoods</span><span class="token punctuation">(</span>BindGoodsForm form<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">saveSeckillTime</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getActId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> form<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+            <span class="token comment" spellcheck="true">// flatMapMany 一次对多次调用</span>
+            <span class="token punctuation">.</span><span class="token function">flatMapMany</span><span class="token punctuation">(</span>time <span class="token operator">-</span><span class="token operator">></span> Flux<span class="token punctuation">.</span><span class="token function">fromIterable</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getGoodsList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>goodsBean <span class="token operator">-</span><span class="token operator">></span> <span class="token function">saveSeckillGoods</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getActId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> goodsBean<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="开启-MyBatis-Plus-SQL"><a href="#开启-MyBatis-Plus-SQL" class="headerlink" title="开启 MyBatis-Plus SQL"></a>开启 MyBatis-Plus SQL</h3><pre class="line-numbers language-php"><code class="language-php"><span class="token shell-comment comment"># 开启 MyBatis-Plus SQL 执行分析插件</span>
+mybatis<span class="token operator">-</span>plus<span class="token punctuation">:</span>
+  configuration<span class="token punctuation">:</span>
+    log<span class="token operator">-</span>impl<span class="token punctuation">:</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>ibatis<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>StdOutImpl
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2024</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
