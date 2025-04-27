@@ -254,7 +254,7 @@
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol>
+<ol start="2">
 <li>实现Runnable接口的run方法</li>
 </ol>
 <pre class="line-numbers language-php"><code class="language-php">Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -270,7 +270,8 @@ Thread thread2 <span class="token operator">=</span> <span class="token keyword"
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"新线程2执行了"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h1><ol>
 <li>new：初始状态 - 线程被new出来时处于此种状态</li>
 <li>Runnable：就绪状态 - 当一个线程的start方法被调用或正在运行的线程CPU时间片耗尽或处于阻塞状态的线程满足了运行条件时处于此种状态。就绪状态的线程处于CPU调度队列中等待获得CPU时间片执行。</li>
@@ -319,7 +320,7 @@ thread2<span class="token punctuation">.</span><span class="token function">star
         <span></span>
     </div>
 
-    <p> Copyright by <a href="">@Tommy Dai</a> in 2024</p>
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2025</p>
 </footer>
 
   <br>

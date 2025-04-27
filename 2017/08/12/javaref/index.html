@@ -259,7 +259,8 @@
 <span class="token variable">$func</span> <span class="token operator">=</span> <span class="token string">"say"</span><span class="token punctuation">;</span>
 
 <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Boy</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token variable">$func</span><span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 执行结果：走吃鸡去！</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="java中动态调用"><a href="#java中动态调用" class="headerlink" title="java中动态调用"></a>java中动态调用</h1><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Boy</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -283,7 +284,8 @@ String func <span class="token operator">=</span> <span class="token string">"ru
 Method method <span class="token operator">=</span> Boy<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
 Object object <span class="token operator">=</span> Boy<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>object<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 执行结果：跑到网吧！</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="动态调用有何意义？🤔️"><a href="#动态调用有何意义？🤔️" class="headerlink" title="动态调用有何意义？🤔️"></a>动态调用有何意义？🤔️</h1><blockquote>
 <p>完全可以使用if判断来动态调用<br>但是当业务逻辑足够复杂或多的时候，需要维护流程控制这部分代码<br>用反射就解耦的这部分流程控制的代码，可以说反射是java框架的核心<br>PHP中也有反射，一般框架层面会用到，日常开发几乎没见到过。</p>
 </blockquote>
@@ -322,7 +324,7 @@ method<span class="token punctuation">.</span><span class="token function">invok
         <span></span>
     </div>
 
-    <p> Copyright by <a href="">@Tommy Dai</a> in 2024</p>
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2025</p>
 </footer>
 
   <br>
