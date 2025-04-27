@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>代码管理的小技巧 - Tommy Dai</title>
+  
+  
+  <meta name="description" content>
+  <meta name="author" content>
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="bookmark" href="/images/favicon.ico">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+ <!-- CSS
+  <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/gridlex.min.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/share.min.css">
+<link rel="stylesheet" href="/css/lightgallery.css">
+   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <link href="https://cdn.bootcss.com/normalize/3.0.2/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/gridlex/2.3.7/gridlex.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/theme.css">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.11/css/share.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/lightgallery/1.6.8/css/lightgallery.min.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/js-cookie/2.2.0/js.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/social-share.js/1.0.11/js/social-share.min.js"></script>
+    <!-- <script src="/js/social-share.min.js"></script> -->
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="header">
+	<div class="header-title">
+		
+			<div class='header-text-no-image'>
+				<h1><a href="/">Tommy Dai</a></h1>
+				<p><small>Love Coding Love Life</small></p>
+			</div>
+			
+		
+	</div>
+	<div id="header-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<article class="article" id="/2025/04/27/push/" data-name='代码管理的小技巧' data-version="">
+
+    <!-- Title -->
+
+    
+        
+            
+                
+                
+            
+        
+    
+
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2025/04/27/push/">
+                代码管理的小技巧
+            </a>
+        </h1>
+        
+        <ul class='article-categories'>
+            
+            
+                <li><a href="/categories/fun/" data-no-instant>
+                    <img src="/images/fun.svg" alt="fun" />
+                </a></li>
+            
+        </ul>
+        
+    </div>
+   
+    <!-- Date and Author -->
+    <p>
+       	2025-04-27
+        by Tommy Dai
+        
+    </p>
+    <p>
+        
+
+	
+		<label><a href="/tags/最佳实践/">#最佳实践</a></label>
+	
+
+
+    </p>
+	<hr />
+
+    <!-- Gallery -->
+    
+    
+
+    <!-- Content -->
+    <div class='article-content'>
+    <p><a href="https://imgse.com/i/pETDehj" target="_blank" rel="noopener"><img src="https://s21.ax1x.com/2025/04/27/pETDehj.png" alt="pETDehj.png"></a></p>
+<p><a href="https://imgse.com/i/pETD3HU" target="_blank" rel="noopener"><img src="https://s21.ax1x.com/2025/04/27/pETD3HU.png" alt="pETD3HU.png"></a></p>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token shell-comment comment">#!/bin/bash</span>
+
+base_dir<span class="token operator">=</span>$<span class="token punctuation">(</span>pwd<span class="token punctuation">)</span>
+
+<span class="token shell-comment comment"># 当前迭代的分支名称</span>
+<span class="token shell-comment comment">#branch=</span><span class="token string">"feature_v4.6.1"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#售后迁移</span>
+branch<span class="token operator">=</span><span class="token string">"feature_v5.4.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#百信银行</span>
+
+
+<span class="token keyword">if</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token variable">$base_dir</span> <span class="token operator">=</span><span class="token operator">~</span> billbear<span class="token operator">-</span>third<span class="token operator">-</span>api <span class="token operator">&amp;&amp;</span> <span class="token variable">$branch</span> <span class="token operator">=</span><span class="token operator">~</span> feature_v4<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">2</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> then
+  branch<span class="token operator">=</span><span class="token string">"feature_v4.2.2_lz"</span><span class="token punctuation">;</span>
+fi
+
+<span class="token shell-comment comment"># 自动合并迭代分支并push</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"push"</span> <span class="token operator">=</span> <span class="token variable">$1</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> then
+<span class="token shell-comment comment">#  git checkout ${branch} &amp;&amp; git pull;</span>
+  git checkout dev <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git merge $<span class="token punctuation">{</span>branch<span class="token punctuation">}</span> <span class="token operator">--</span>message <span class="token string">"merge ${branch} into dev"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
+  git checkout test <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git merge $<span class="token punctuation">{</span>branch<span class="token punctuation">}</span> <span class="token operator">--</span>message <span class="token string">"merge ${branch} into test"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
+<span class="token shell-comment comment">#  git checkout prev &amp;&amp; git pull --rebase &amp;&amp; git merge ${branch} --message </span><span class="token string">"merge ${branch} into prev"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
+  git checkout $<span class="token punctuation">{</span>branch<span class="token punctuation">}</span><span class="token punctuation">;</span>
+fi
+
+<span class="token shell-comment comment"># 自动创建迭代分账</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"test"</span> <span class="token operator">=</span> <span class="token variable">$1</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> then
+  git stash <span class="token operator">&amp;&amp;</span> git checkout master <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git checkout <span class="token operator">-</span>b $<span class="token punctuation">{</span>branch<span class="token punctuation">}</span> <span class="token operator">&amp;&amp;</span> git stash pop<span class="token punctuation">;</span>
+<span class="token shell-comment comment">#  git checkout master &amp;&amp; git pull --rebase &amp;&amp; git checkout -b ${branch};</span>
+<span class="token shell-comment comment">#  git checkout main &amp;&amp; git pull --rebase;</span>
+<span class="token shell-comment comment">#  git checkout ${branch} &amp;&amp; git pull --rebase;</span>
+<span class="token shell-comment comment">#  git branch -a;</span>
+fi
+
+<span class="token shell-comment comment"># 批量操作</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"batch"</span> <span class="token operator">=</span> <span class="token variable">$1</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> then
+  <span class="token keyword">for</span> dir in <span class="token operator">*</span><span class="token operator">/</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    cd <span class="token string">"$base_dir/$dir"</span> <span class="token operator">||</span> exit<span class="token punctuation">;</span>
+    <span class="token operator">/</span>Applications<span class="token operator">/</span>IntelliJ\ <span class="token constant">IDEA</span><span class="token punctuation">.</span>app<span class="token operator">/</span>Contents<span class="token operator">/</span>plugins<span class="token operator">/</span>maven<span class="token operator">/</span>lib<span class="token operator">/</span>maven3<span class="token operator">/</span>bin<span class="token operator">/</span>mvn clean
+    rm <span class="token operator">-</span>rf <span class="token operator">*</span><span class="token punctuation">.</span>iml <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase<span class="token punctuation">;</span>
+<span class="token shell-comment comment">#    git checkout master &amp;&amp; git pull --rebase;</span>
+<span class="token shell-comment comment">#    git checkout ${branch} &amp;&amp; git pull --rebase;</span>
+<span class="token shell-comment comment">#    git checkout master &amp;&amp; git pull --rebase &amp;&amp; git checkout ${branch};</span>
+  done
+fi
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><ul>
+<li>对于微服务项目，直接在项目任意目录或者文件上，右击，按图一的方式选择操作，即可完成代码的管理</li>
+<li>其他项目可以通过软链接的方式，将这个shell文件链接到项目下，通过定义多个branch方式，方便知道当前在开发哪些迭代</li>
+</ul>
+
+    </div>
+    <hr />
+
+    <h2>Share and comment</h2>
+    <div class="social-share"></div>
+    <br />
+    
+        <div id="comment"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine@1.3.6/dist/Valine.min.js'></script>
+        <script>
+        new Valine({
+            el: '#comment' ,
+            notify: false,
+            verify: false,
+            appId: 'Qkxf6mGlzXxuoNkKXnaLqtfQ-gzGzoHsz',
+            appKey: '1epaom2Ta3x0GWm0yGC2p1o6',
+            placeholder: '你想说点什么...',
+            path: window.location.pathname,
+            avatar: 'retro'
+        });
+        </script>
+    
+
+    
+    
+</article>
+  </div>
+
+  <footer class='footer'>
+    <div class='footer-logo'>
+        <span></span>
+    </div>
+
+    <p> Copyright by <a href="">@Tommy Dai</a> in 2025</p>
+</footer>
+
+  <br>
+
+  <div id="footer-menu-container">
+		<nav class="menu">
+	
+		
+	
+	
+	
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/">
+					<img src="/images/home.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/">
+							<span>Home</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/archives/">
+					<img src="/images/archive.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/archives/">
+							<span>Archives</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/categories/fun/">
+					<img src="/images/fun.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/categories/fun/">
+							<span>Fun</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/about/">
+					<img src="/images/resume.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/about/">
+							<span>About</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+		
+		
+			<div class='menu-item grow'>
+			
+				<div class='menu-icon'>
+				<a href="/search/">
+					<img src="/images/search.svg" alt="">
+					</a>
+					</div>
+					
+					<div class="menu-name">
+						<a class='menu-link' href="/search/">
+							<span>Search</span>
+						</a>
+					</div>
+				</a>
+			</div>
+		
+	
+</nav>
+
+	</div>
+
+  <script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '/js/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<script src="/js/lightgallery.min.js"></script>
+<script type='text/javascript'>
+    lightGallery(document.getElementById('lightgallery'));
+</script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+setVersionForCurrentPage();
+setVersionBadgeForIndexPages();
+</script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
