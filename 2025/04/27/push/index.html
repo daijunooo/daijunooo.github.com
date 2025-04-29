@@ -247,20 +247,15 @@ basename<span class="token operator">=</span>$<span class="token punctuation">(<
 
 <span class="token shell-comment comment"># 当前迭代的分支名称</span>
 <span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v4.6.1"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#售后迁移</span>
-dev<span class="token operator">=</span><span class="token string">"feature_v5.4.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#百信银行</span>
-<span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v4.2.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#齐商银行</span>
+<span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v5.4.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#百信银行</span>
+dev<span class="token operator">=</span><span class="token string">"feature_v4.2.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#齐商银行</span>
 
 <span class="token shell-comment comment"># 获取当前默认分支</span>
 <span class="token keyword">function</span> <span class="token function">master</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   git symbolic<span class="token operator">-</span>ref refs<span class="token operator">/</span>remotes<span class="token operator">/</span>origin<span class="token operator">/</span><span class="token constant">HEAD</span> <span class="token operator">|</span> sed <span class="token string">'s@.*/@@'</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-
 <span class="token keyword">function</span> <span class="token function">branch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> $<span class="token punctuation">(</span>pwd<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">~</span> billbear<span class="token operator">-</span>third<span class="token operator">-</span>api <span class="token operator">&amp;&amp;</span> <span class="token variable">$dev</span> <span class="token operator">=</span><span class="token operator">~</span> feature_v4<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">2</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> then
-    <span class="token keyword">echo</span> <span class="token string">"feature_v4.2.2_lz"</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span><span class="token punctuation">;</span>
-  fi
-  <span class="token keyword">echo</span> <span class="token string">"$dev"</span><span class="token punctuation">;</span>
+  <span class="token punctuation">[</span><span class="token punctuation">[</span> $<span class="token punctuation">(</span>pwd<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">~</span> billbear<span class="token operator">-</span>third<span class="token operator">-</span>api <span class="token operator">&amp;&amp;</span> <span class="token variable">$dev</span> <span class="token operator">=</span><span class="token operator">~</span> feature_v4<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">2</span> <span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">echo</span> <span class="token string">"feature_v4.2.2_lz"</span> <span class="token operator">||</span> <span class="token keyword">echo</span> <span class="token string">"$dev"</span>
 <span class="token punctuation">}</span>
 
 <span class="token shell-comment comment"># 自动合并迭代分支并push</span>
@@ -288,13 +283,12 @@ fi
 <span class="token shell-comment comment">#    /Applications/IntelliJ\ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn clean</span>
 <span class="token shell-comment comment">#    rm -rf *.iml &amp;&amp; git pull --rebase;</span>
 <span class="token shell-comment comment">#    git checkout $(master) &amp;&amp; git pull --rebase;</span>
-<span class="token shell-comment comment">#    git checkout $(branch) &amp;&amp; git pull --rebase; # 切换代码到当前开发分支</span>
-<span class="token shell-comment comment">#    git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout $(branch);</span>
+<span class="token shell-comment comment">#    git checkout $(branch) &amp;&amp; git pull --rebase;</span>
+<span class="token shell-comment comment"># 输出本期迭代所有改动，并比较与主分支的差异提交个数</span>
+    git checkout $<span class="token punctuation">(</span>branch<span class="token punctuation">)</span> <span class="token operator">&amp;</span><span class="token operator">></span> <span class="token operator">/</span>dev<span class="token operator">/</span><span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">echo</span> $<span class="token punctuation">(</span>basename <span class="token string">"$dir"</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git rev<span class="token operator">-</span>list <span class="token operator">--</span>count $<span class="token punctuation">(</span>master<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span>$<span class="token punctuation">(</span>branch<span class="token punctuation">)</span><span class="token punctuation">;</span>
   done
 fi
-
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><ul>
 <li>对于微服务项目，直接在项目任意目录或者文件上，右击，按图一的方式选择操作，即可完成代码的管理</li>
 <li>其他项目可以通过软链接的方式，将这个shell文件链接到项目下，通过定义多个branch方式，方便知道当前在开发哪些迭代</li>
