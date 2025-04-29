@@ -246,39 +246,39 @@ path<span class="token operator">=</span>$<span class="token punctuation">(</spa
 basename<span class="token operator">=</span>$<span class="token punctuation">(</span>basename <span class="token string">"$path"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token shell-comment comment"># 当前迭代的分支名称</span>
-<span class="token shell-comment comment">#branch=</span><span class="token string">"feature_v4.6.1"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#售后迁移</span>
-<span class="token shell-comment comment">#branch=</span><span class="token string">"feature_v5.4.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#百信银行</span>
-branch<span class="token operator">=</span><span class="token string">"feature_v4.2.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#齐商银行</span>
+<span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v4.6.1"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#售后迁移</span>
+dev<span class="token operator">=</span><span class="token string">"feature_v5.4.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#百信银行</span>
+<span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v4.2.2"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#齐商银行</span>
 
 <span class="token shell-comment comment"># 获取当前默认分支</span>
 <span class="token keyword">function</span> <span class="token function">master</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   git symbolic<span class="token operator">-</span>ref refs<span class="token operator">/</span>remotes<span class="token operator">/</span>origin<span class="token operator">/</span><span class="token constant">HEAD</span> <span class="token operator">|</span> sed <span class="token string">'s@.*/@@'</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">function</span> <span class="token function">get_branch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> $<span class="token punctuation">(</span>pwd<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">~</span> billbear<span class="token operator">-</span>third<span class="token operator">-</span>api <span class="token operator">&amp;&amp;</span> <span class="token variable">$branch</span> <span class="token operator">=</span><span class="token operator">~</span> feature_v4<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">2</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> then
+<span class="token keyword">function</span> <span class="token function">branch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> $<span class="token punctuation">(</span>pwd<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">~</span> billbear<span class="token operator">-</span>third<span class="token operator">-</span>api <span class="token operator">&amp;&amp;</span> <span class="token variable">$dev</span> <span class="token operator">=</span><span class="token operator">~</span> feature_v4<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">2</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> then
     <span class="token keyword">echo</span> <span class="token string">"feature_v4.2.2_lz"</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span><span class="token punctuation">;</span>
   fi
-  <span class="token keyword">echo</span> <span class="token string">"$branch"</span><span class="token punctuation">;</span>
+  <span class="token keyword">echo</span> <span class="token string">"$dev"</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
 <span class="token shell-comment comment"># 自动合并迭代分支并push</span>
 <span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"push"</span> <span class="token operator">=</span> <span class="token variable">$1</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> then
-<span class="token shell-comment comment">#  git checkout $(get_branch) &amp;&amp; git pull;</span>
-  git checkout dev <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git merge $<span class="token punctuation">(</span>get_branch<span class="token punctuation">)</span> <span class="token operator">--</span>message <span class="token string">"merge $(get_branch) into dev"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
-  git checkout test <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git merge $<span class="token punctuation">(</span>get_branch<span class="token punctuation">)</span> <span class="token operator">--</span>message <span class="token string">"merge $(get_branch) into test"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
-<span class="token shell-comment comment">#  git checkout prev &amp;&amp; git pull --rebase &amp;&amp; git merge $(get_branch) --message </span><span class="token string">"merge $(get_branch) into prev"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
-  git checkout $<span class="token punctuation">(</span>get_branch<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token shell-comment comment">#  git checkout $(branch) &amp;&amp; git pull;</span>
+  git checkout dev <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git merge $<span class="token punctuation">(</span>branch<span class="token punctuation">)</span> <span class="token operator">--</span>message <span class="token string">"merge $(branch) into dev"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
+  git checkout test <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;&amp;</span> git merge $<span class="token punctuation">(</span>branch<span class="token punctuation">)</span> <span class="token operator">--</span>message <span class="token string">"merge $(branch) into test"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
+<span class="token shell-comment comment">#  git checkout prev &amp;&amp; git pull --rebase &amp;&amp; git merge $(branch) --message </span><span class="token string">"merge $(branch) into prev"</span> <span class="token operator">&amp;&amp;</span> git push<span class="token punctuation">;</span>
+  git checkout $<span class="token punctuation">(</span>branch<span class="token punctuation">)</span><span class="token punctuation">;</span>
 fi
 
 <span class="token shell-comment comment"># 自动创建迭代分账</span>
 <span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"test"</span> <span class="token operator">=</span> <span class="token variable">$1</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> then
-<span class="token shell-comment comment">#  git stash &amp;&amp; git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout -b $(get_branch) &amp;&amp; git stash pop;</span>
-<span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout -b $(get_branch);</span>
+<span class="token shell-comment comment">#  git stash &amp;&amp; git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout -b $(branch) &amp;&amp; git stash pop;</span>
+<span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout -b $(branch);</span>
 <span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase;</span>
-  git checkout $<span class="token punctuation">(</span>get_branch<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase<span class="token punctuation">;</span>
-<span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase > /dev/null &amp;&amp; git log $(master)..$(get_branch); # 检查发版</span>
+<span class="token shell-comment comment">#  git checkout $(branch) &amp;&amp; git pull --rebase;</span>
+  git checkout $<span class="token punctuation">(</span>master<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">></span> <span class="token operator">/</span>dev<span class="token operator">/</span><span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> git log $<span class="token punctuation">(</span>master<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span>$<span class="token punctuation">(</span>branch<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token shell-comment comment"># 检查发版</span>
 fi
 
 <span class="token shell-comment comment"># 批量操作</span>
@@ -288,11 +288,11 @@ fi
 <span class="token shell-comment comment">#    /Applications/IntelliJ\ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn clean</span>
 <span class="token shell-comment comment">#    rm -rf *.iml &amp;&amp; git pull --rebase;</span>
 <span class="token shell-comment comment">#    git checkout $(master) &amp;&amp; git pull --rebase;</span>
-    git checkout $<span class="token punctuation">(</span>get_branch<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase<span class="token punctuation">;</span>
-<span class="token shell-comment comment">#    git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout $(get_branch);</span>
-<span class="token shell-comment comment">#  merge_request;</span>
+<span class="token shell-comment comment">#    git checkout $(branch) &amp;&amp; git pull --rebase; # 切换代码到当前开发分支</span>
+<span class="token shell-comment comment">#    git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout $(branch);</span>
   done
 fi
+
 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><ul>
