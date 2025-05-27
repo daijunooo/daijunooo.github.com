@@ -247,8 +247,7 @@ path<span class="token operator">=</span>$<span class="token punctuation">(</spa
 basename<span class="token operator">=</span>$<span class="token punctuation">(</span>basename <span class="token string">"$path"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token shell-comment comment"># 当前迭代的分支名称</span>
-dev<span class="token operator">=</span><span class="token string">"feature_v4.6.1"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#售后迁移</span>
-<span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v5.4.4"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#统统付</span>
+dev<span class="token operator">=</span><span class="token string">"feature_v5.4.4"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#统统付</span>
 <span class="token shell-comment comment">#dev=</span><span class="token string">"feature_v4.5.1"</span><span class="token punctuation">;</span> <span class="token shell-comment comment">#古茗</span>
 
 <span class="token shell-comment comment"># 获取当前默认分支</span>
@@ -272,8 +271,8 @@ fi
 <span class="token shell-comment comment">#  git stash &amp;&amp; git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout -b $(branch) &amp;&amp; git stash pop;</span>
 <span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase &amp;&amp; git checkout -b $(branch);</span>
 <span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase;</span>
-  git checkout $<span class="token punctuation">(</span>branch<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase<span class="token punctuation">;</span>
-<span class="token shell-comment comment">#  git checkout $(master) &amp;&amp; git pull --rebase > /dev/null &amp;&amp; git log $(master)..$(branch); # 检查发版</span>
+<span class="token shell-comment comment">#  git checkout $(branch) &amp;&amp; git pull --rebase;</span>
+  git checkout $<span class="token punctuation">(</span>master<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">></span> <span class="token operator">/</span>dev<span class="token operator">/</span><span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> git log $<span class="token punctuation">(</span>master<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span>$<span class="token punctuation">(</span>branch<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token shell-comment comment"># 检查发版</span>
 fi
 
 <span class="token shell-comment comment"># 批量操作</span>
@@ -282,15 +281,15 @@ fi
     cd <span class="token string">"$path/$dir"</span> <span class="token operator">||</span> exit<span class="token punctuation">;</span>
 <span class="token shell-comment comment">#    /Applications/IntelliJ\ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn clean</span>
 <span class="token shell-comment comment">#    find ./ -type f -name </span><span class="token string">"*.iml"</span> <span class="token operator">-</span>delete<span class="token punctuation">;</span>
-<span class="token shell-comment comment">#    git checkout $(master) &amp;&amp; git pull --rebase;</span>
-<span class="token shell-comment comment">#    git checkout $(branch) &amp;&amp; git pull --rebase;</span>
-<span class="token shell-comment comment">#    git pull --rebase origin $(master) $(branch) &amp;> /dev/null;</span>
+    git checkout $<span class="token punctuation">(</span>master<span class="token punctuation">)</span> <span class="token operator">&amp;</span><span class="token operator">></span> <span class="token operator">/</span>dev<span class="token operator">/</span><span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> git pull <span class="token operator">--</span>rebase <span class="token operator">&amp;</span><span class="token operator">></span> <span class="token operator">/</span>dev<span class="token operator">/</span><span class="token keyword">null</span><span class="token punctuation">;</span>
 
 <span class="token shell-comment comment"># 输出本期迭代所有改动，并比较与主分支的差异提交个数</span>
-<span class="token shell-comment comment">#     git checkout $(branch) &amp;> /dev/null &amp;&amp; echo $(basename </span><span class="token string">"$dir"</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git rev<span class="token operator">-</span>list <span class="token operator">--</span>count $<span class="token punctuation">(</span>master<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span>$<span class="token punctuation">(</span>branch<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     git checkout $<span class="token punctuation">(</span>branch<span class="token punctuation">)</span> <span class="token operator">&amp;</span><span class="token operator">></span> <span class="token operator">/</span>dev<span class="token operator">/</span><span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">echo</span> $<span class="token punctuation">(</span>basename <span class="token string">"$dir"</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> git rev<span class="token operator">-</span>list <span class="token operator">--</span>count $<span class="token punctuation">(</span>master<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span>$<span class="token punctuation">(</span>branch<span class="token punctuation">)</span><span class="token punctuation">;</span>
   done
 fi
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><ul>
 <li>对于微服务项目，直接在项目任意目录或者文件上，右击，按图一的方式选择操作，即可完成代码的管理</li>
 <li>其他项目可以通过软链接的方式，将这个shell文件链接到项目下，通过定义多个branch方式，方便知道当前在开发哪些迭代</li>
