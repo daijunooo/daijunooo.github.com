@@ -237,7 +237,13 @@ retransform demo<span class="token punctuation">.</span><span class="token keywo
 <span class="token shell-comment comment"># step 4 根据上一步命令结果，如果替换成功，测试bug是否修复。如果替换错了可以倒退</span>
 retransform <span class="token operator">--</span>deleteAll
 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token shell-comment comment"># 查询类</span>
+sc <span class="token operator">*</span>NotifyController
+
+<span class="token shell-comment comment"># 反编译类或方法</span>
+jad <span class="token operator">--</span>source<span class="token operator">-</span>only com<span class="token punctuation">.</span>billbear<span class="token punctuation">.</span>paycenter<span class="token punctuation">.</span>controller<span class="token punctuation">.</span>NotifyController
+jad <span class="token operator">--</span>source<span class="token operator">-</span>only com<span class="token punctuation">.</span>billbear<span class="token punctuation">.</span>paycenter<span class="token punctuation">.</span>controller<span class="token punctuation">.</span>NotifyController xsPayNotify
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><a href="https://arthas.aliyun.com/doc/" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/</a></p>
 
     </div>
